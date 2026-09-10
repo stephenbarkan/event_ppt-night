@@ -1,0 +1,193 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/icon.njk" import icon %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro button(props={},attrs={}) %}
+
+{# Values ----------- #}
+
+{% set buttonStyles = {
+    shared: "decoration-[1.5px] underline-offset-4 transition-transform active:scale-[.98]",
+    button: {
+        styles: "hover:no-underline underline",
+        sizes: {
+            base: "text-button-base min-w-tube-base-y min-h-tube-base-y rounded-base gap-3xs px-tube-base-x py-3xs",
+            sm: "text-button-sm min-h-tube-sm-y min-w-tube-sm-y rounded-sm gap-2xs px-tube-sm-x py-3xs",
+            lg: "text-button-lg min-h-tube-lg-y min-w-tube-lg-y rounded-lg gap-xs px-tube-lg-x py-3xs",
+            fab: "text-button-base min-w-tube-lg-y min-h-tube-lg-y rounded-full p-3xs"
+        },
+        variants: {
+            fill: {
+                styles:"bg-neutral-light hover:bg-neutral text-surface border border-neutral",
+                on: "bg-neutral-light! border-neutral! no-underline! hover:no-underline!"
+            },
+            default: {
+                styles:"border border-hue-light text-neutral hover:bg-hue-light hover:border-hue hover:text-surface",
+                on: "bg-hue! text-surface! no-underline! "
+            }
+        }
+    },
+    link: {
+        styles: "",
+        on: "",
+        sizes: {
+            inherit: "",
+            base: "text-body-base gap-2xs",
+            sm: "text-body-sm gap-3xs",
+            lg: "text-body-lg gap-xs"
+        },
+        variants: {
+            default:{
+                styles:"text-link underline hover:no-underline",
+                on:"no-underline! hover:underline!"
+            },
+            neutral:{
+                styles:"text-neutral underline hover:no-underline",
+                on:""
+            }
+        }
+    }
+} %}
+
+{% set tooltipStyles = "bg-neutral text-surface border-neutral-light border rounded-sm text-body-sm min-h-tube-sm-y px-tube-sm-x py-3xs max-w-[250px] text-center" %}
+
+{# {% set buttonWrapperStyles = {
+    shared: "",
+    sizes: {
+        base: "",
+        sm: "",
+        lg: ""
+    },
+    variants: {
+        base: ""
+    }
+} %} #}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set label = null if props.label == null else props.label %}
+{% set glyph = null if props.glyph == null else props.glyph %}
+{% set tooltip = null if props.tooltip == null else props.tooltip %}
+{% set type = "button" if props.type == null else props.type %}
+{% set size = "base" if props.size == null else props.size %}
+{% set variant = "default" if props.variant == null else props.variant %}
+{% set toggleValue = null if props.toggleValue == null else props.toggleValue %}
+{% set glyphPosition = "start" if props.glyphPosition == null else props.glyphPosition %}
+{% set alignment = "center" if props.alignment == null else props.alignment %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<span data-button
+    {% if tooltip %}
+        x-data="{tooltipId: $id('tooltip') }"
+        :style="{ 'anchor-name': '--' + tooltipId }"
+    {% endif %}
+    class="inline-flex shrink-0 has-disabled:opacity-60 has-disabled:pointer-events-none
+    {% if type === "button" %}
+        {{ buttonWrapperStyles.shared }}
+        {{ buttonWrapperStyles.sizes[size] }}
+        {{ buttonWrapperStyles.variants[variant] }}
+    {% endif %}
+    {{ attrs.class }}">
+
+    <{% if attrs.href %}a{% else %}button{% endif %}
+        {{ loopAttrs(attrs) }}
+        {% if not label and tooltip %}
+            {% if toggleValue %}
+                :aria-label="{{ toggleValue}} ? '{{ tooltip.on }}' : '{{ tooltip.off }}'"
+                :title="{{ toggleValue}} ? '{{ tooltip.on }}' : '{{ tooltip.off }}'"
+            {% else %}
+                aria-label="{{ tooltip }}"
+                title="{{ tooltip }}"
+            {% endif %}
+        {% endif %}
+        {% if tooltip %}
+            :interestfor="tooltipId"
+        {% endif %}
+        {% if props.disabled %}:disabled="{{ props.disabled }}"{% endif %}
+        class="w-full flex justify-{{ alignment }} items-center cursor-pointer
+            {{ buttonStyles[type].styles }}
+            {{ buttonStyles[type].sizes[size] }}
+            {{ buttonStyles[type].variants[variant].styles }}
+            {{ buttonStyles.shared }}"
+            {% if toggleValue %}
+                {% if buttonStyles[type].variants[variant].on %}
+                    :class="{{ toggleValue }} && '{{ buttonStyles[type].variants[variant].on }}'"
+                {% endif %}
+        {% endif %}>
+
+        {% if toggleValue %}
+            <span class="flex items-center justify-center pointer-events-none gap-inherit {% if glyphPosition === "end" %}flex-row-reverse{% endif %}">
+                {% if glyph %}
+                    {% set show %}{{ toggleValue }} == false {% endset %}
+                    {{ icon({glyph:glyph.off if glyph.off else glyph }, {"x-show":show}) }}
+                    {% set show %}{{ toggleValue }} == true {% endset %}
+                    {{ icon({glyph:glyph.on if glyph.on else glyph }, {"x-show":show, "x-cloak": true}) }}
+                {% endif %}
+                {% if label %}
+                    <span x-show="!({{ toggleValue }})">{{ label.off if label.off else label }}</span>
+                    <span x-show="{{ toggleValue }}" x-cloak>{{ label.on if label.on else label }}</span>
+                {% endif %}
+            </span>
+        {% else %}
+            {% if glyph or label %}
+                <span class="flex items-center justify-center pointer-events-none gap-inherit {% if glyphPosition === "end" %}flex-row-reverse{% endif %}">
+                    {% if glyph %}
+                        {{ icon({glyph:glyph}) }}
+                    {% endif %}
+                    {% if label %}
+                        <span class="text-{{alignment}}">{{ label }}</span>
+                    {%- endif -%}
+                </span>
+            {% endif %}
+        {% endif %}
+
+        {%- if not label and not glyph -%}
+            {% if caller %}
+                {{ caller() | safe }}
+            {% endif %}
+        {%- endif -%}
+
+    </{% if attrs.href %}a{% else %}button{% endif %}>
+
+    {# Tooltip #}
+    {% if tooltip %}
+        <div
+            :id="tooltipId"
+                popover="hint"
+                :style="{'position-anchor': '--' + tooltipId}"
+                class="[position-area:top] [position-try-fallbacks:flip-block_flip-inline] my-3xs [:popover-open]:flex {{ tooltipStyles }}">
+            <div
+            class="flex items-center justify-center"
+                x-text="{% if toggleValue %}{{ toggleValue }} ? '{{ tooltip.on }}' : '{{ tooltip.off }}'{% else %}'{{ tooltip }}'{% endif %}"></div>
+        </div>
+    {% endif %}
+</span>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set buttonMeta = {
+    args: '{{ button(
+    props={
+        label: "",
+        glyph: "",
+        tooltip: "",
+        type: "button | link",
+        size: "base | lg | sm | inherit",
+        variant: "",
+        toggleValue: "",
+        glyphPosition: "start | end"
+    },
+    attrs={}
+) }}',
+description: "
+- Tag defaults to `button` unless you provide an `attrs.href`, then it'll be an `a` tag.
+- Optionally you can use `{% call %}` to give custom inner HTML.
+- `props.toggleValue` is the `x-data` value that the button looks for to determine its on/off state. If you use this property, the `button` expects the `props.icon`, `props.label`, and `props.tooltip` values to be objects with `on` and `off` keys.
+"
+} %}

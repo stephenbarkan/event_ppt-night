@@ -1,0 +1,37 @@
+{# Description -------------------------------------------------------------------------------------------------------------------------- #}
+{# This layout file is the most basic that contains the default page title #}
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% extends "layouts/base.njk" %}
+
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set title = data.title %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% block content %}
+
+    {# page title #}
+    {% call section({}, {id:"pageTitle", class:""}) %}
+        {% block pageTitle %}
+            {% call container({}) %}
+                {% call textLockup({
+                    titleTag: "h1",
+                    size: "lg",
+                    eyebrow: data.eyebrow,
+                    title: data.title,
+                    elaboration: data.elaboration,
+                    textAlignment: "center"
+                }) %}
+                {% block titleCTA %}{% endblock titleCTA %}
+                {% endcall %}
+            {% endcall %}
+        {% endblock %}
+    {% endcall %}
+
+    {% block pageContent %}{% endblock %}
+
+{% endblock %}

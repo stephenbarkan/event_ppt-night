@@ -1,0 +1,177 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/dropdown.njk" import dropdown %}
+{% from "components/section.njk" import section %}
+{% from "components/container.njk" import container %}
+{% from "components/dialog.njk" import dialog %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro navbar(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set themeAlignment = "left" %}
+{% set dialogOnNarrow = true %}
+{% set minScrollSpeed = 35 %}
+{% set switchToDialog = "md" %}
+
+{% set navbarStyles = "@container z-(--z-top) bg-surface border-b transition-all duration-200 border-transparent py-sm" %}
+{% set itemGap = "gap-sm" %}
+{% set stickyStyles = "sticky top-0" %}
+{% set onScrollStyles = "border-neutral-light! py-xs! duration-600!" %}
+{% set dialogStyles = "gap-base-y py-lg px-base-x justify-items-center" %}
+{% set dialogOpenStyles = "border-neutral-light!" %}
+
+{% set navButtonProps = {
+    type:"link"
+} %}
+{% set dialogButtonProps = {
+    type:"link",
+    size:"lg"
+} %}
+
+
+
+{% set dialogTriggerProps = {
+    glyph: {off:"menu", on:"close"},
+    tooltip: {off: "Open navigation menu", on:"Close navigation menu"}
+} %}
+
+{# Nav content defaults ------------ #}
+
+{# Logo #}
+{% set navbarLogo %}
+   {{ button({label: global.siteTitle, type: "link", variant:"neutral"},{href:"/"}) }}
+{% endset %}
+
+{# Wide screen left side content  #}
+{% set leftSideDefault %}
+{% endset%}
+
+{# Wide screen right side content  #}
+{% set rightSideDefault %}
+    {% for link in navLinks %}
+        {% if link.macro === "button" and not link.hideInNav %}
+            {{ button(link.props | assign(navButtonProps), link.attrs | assign({"role": "menuitem"}) ) }}
+        {% elseif link.macro === "dropdown" and not link.hideInNav %}
+            {{ dropdown(link.props | assign(navButtonProps), link.attrs ) }}
+        {% endif %}
+    {% endfor %}
+{% endset %}
+
+{# Narrow screen dialog contents – delete to use same content as wide screen right/left sides #}
+{% set dialogContents %}
+    {% call container({size:"base", type:"cols-1"},{class:dialogStyles}) %}
+        {% for link in navLinks %}
+            {% if link.macro === "button" %}
+                {{ button(link.props | assign(dialogButtonProps), link.attrs | assign({"role": "menuitem"}) ) }}
+            {% elseif link.macro === "dropdown" %}
+                {{ dropdown(link.props | assign(dialogButtonProps), link.attrs ) }}
+            {% endif %}
+        {% endfor %}
+    {% endcall %}
+{% endset %}
+
+{# Defaults ------------------ #}
+
+{% set alignment %}{{ props.alignment | safe if props.alignment else themeAlignment | safe }}{% endset %}
+{% set leftContent %}{{ props.leftSide | safe if props.leftSide else leftSideDefault | safe }}{% endset %}
+{% set rightContent %}{{ props.rightSide | safe if props.rightSide else rightSideDefault | safe }}{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<nav data-navbar
+    {{ loopAttrs(attrs) }}
+    x-ref="navbar"
+    x-data="{
+        navbarHidden: false,
+        dialogOpen: false,
+        lastScrollPos: 0,
+        navbarHeight: $refs.navbar.offsetHeight,
+        setNavbarVisibility() {
+            const diff = window.scrollY - this.lastScrollPos;
+            if (!hasScrolled) {
+                this.navbarHidden = false
+            } else if (diff > {{ minScrollSpeed }}) {
+                this.navbarHidden = true
+            } else if (diff < -{{ minScrollSpeed }} ) {
+                this.navbarHidden = false
+            }
+            this.setNavbarHeight()
+            this.lastScrollPos = Math.floor(window.scrollY)
+        },
+        setNavbarHeight() {
+            setTimeout(() => {
+                if (this.navbarHidden) {
+                    this.navbarHeight = 0;
+                } else {
+                    this.navbarHeight = Math.floor(this.$refs.navbar.offsetHeight);
+                }
+                document.documentElement.style.setProperty('--space-navbar', this.navbarHeight + 'px')
+            }, 100);
+        },
+        init() { {# sets navbar height on js load #}
+            this.navbarHidden = false
+            this.setNavbarHeight()
+        }
+    }"
+    @scroll.window.throttle.100ms="setNavbarVisibility"
+    @resize.window="setNavbarHeight"
+    @dialog-state.window=" setNavbarHeight; dialogOpen = $event.detail"
+    :class="{
+        '-translate-y-full': navbarHidden && hasScrolled,
+        '{{ onScrollStyles }}': hasScrolled,
+        '{{ dialogOpenStyles }}': dialogOpen
+    }"
+    class="w-full flex flex-col transition {{ attrs.class }} {{ navbarStyles }} {{ stickyStyles if props.sticky }}">
+    {% call section({padding:"base", tag:"div"}) %}
+
+        {# wide screen container #}
+        {% call container({size: "base", type:"flex"},{class:"items-center justify-between" + " max-" + switchToDialog + ":hidden" if dialogOnNarrow }) %}
+
+            <div data-slot="left" class="grow flex items-center justify-start flex-wrap {{ itemGap }} {% if alignment === "center" %}basis-1/2 shrink{% endif %}">
+                {{ navbarLogo | safe if alignment !== "center" }}
+                {{ leftContent | safe }}
+            </div>
+
+            {% if alignment === "center" %}
+                <div data-slot="center" class="grow flex items-center justify-center flex-wrap shrink-0 {{ itemGap }}">
+                    {{ navbarLogo | safe }}
+                </div>
+            {% endif %}
+
+            <div data-slot="right" class="grow flex items-stretch justify-end flex-wrap {{ itemGap }} {% if alignment === "left" %}shrink-0{% elseif alignment === "center" %}basis-1/2 shrink{% endif %}">
+                {{ rightContent | safe }}
+            </div>
+
+        {% endcall %}
+
+        {# the narrow screen container that has the dialog #}
+        {% if dialogOnNarrow %}
+            {% call container({size: "base", type:"flex"},{class:"items-center justify-between " + switchToDialog + ":hidden"}) %}
+                {{ navbarLogo | safe }}
+                {% if leftContent or rightContent %}
+                    {% call dialog({
+                        alignment:"top",
+                        triggerProps: dialogTriggerProps,
+                        teleportedStyles: "top-navbar"
+                    }) %}
+                        {# Displays the dialogContents variable if it exists, otherwise duplicates the wide screen navbar content #}
+                        {% if dialogContents %}
+                            {{ dialogContents | safe }}
+                        {% else %}
+                            {{ leftContent | safe }}
+                            {{ rightContent | safe }}
+                        {% endif %}
+                    {% endcall %}
+                {% endif %}
+            {% endcall %}
+        {% endif %}
+    {% endcall %}
+</nav>
+{% endmacro %}

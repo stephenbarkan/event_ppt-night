@@ -1,0 +1,56 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro truncateHeight(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set truncateHeightStyles = "" %}
+
+{# Other ------------------ #}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set truncatedHeight = "h-[150px]" if props.truncatedHeight == null else props.truncatedHeight %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-truncateHeight
+    x-data="{expanded: false}"
+    {{ loopAttrs(attrs) }}
+    class="relative flex flex-col gap-xs {{ attrs.class }} {{ truncateHeightStyles }}">
+
+    <div
+        x-on:focusin="expanded = true"
+        :class="{'h-auto' : expanded, '{{ truncatedHeight }} fade-always fade-b fade-size-xl' : !expanded }"
+        class="overflow-hidden transition-all duration-250 pb-[.25em]">
+        {{ caller() | safe }}
+    </div>
+    {{ button(props | assign({toggleValue:"expanded"}),{'@click': "expanded = !expanded", class:"w-max"}) }}
+
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set truncateHeightMeta = {
+    args: '{% call truncateHeight(
+    props={
+        input: "",
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: "
+- Use to show only a portion of a section
+-
+-
+"
+} %}

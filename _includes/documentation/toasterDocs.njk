@@ -1,0 +1,14 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/toaster.njk" import toaster, toasterMeta %}
+{% from "components/button.njk" import button %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "toaster",
+    meta: toasterMeta
+}) %}
+    {{ button({label: "Click to trigger a toast"}, {"@click": "$dispatch('notify', { content:`Hello! I am Toast!`, toasterId:'siteToaster' })"}) }}
+{% endcall %}

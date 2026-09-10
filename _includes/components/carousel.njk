@@ -1,0 +1,212 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/icon.njk" import icon %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro carousel(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set carouselStyles = "border-neutral-lighter gap-sm" %}
+
+{% set controlsStyles = "flex items-center justify-center gap-xs" %}
+
+{% set indicatorRowStyles = " *:-mx-1 px-px" %}
+{% set indicatorStyles = "size-2xs border border-neutral-light hover:bg-neutral-light rounded-full" %}
+{% set indicatorCheckedStyles = "bg-neutral! border-neutral!" %}
+{% set buttonStyles = "min-w-[100px]" %}
+
+{% set buttonProps = {
+    size: "sm"
+} %}
+
+{# Other ------------------ #}
+
+{% set buttonPreviousLabel = "" %}
+{% set buttonNextLabel = "" %}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set ariaLabel = "Carousel" if props.ariaLabel == null else props.ariaLabel %}
+{% set indicators = true if props.indicators == null else props.indicators %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-carousel
+    role="group"
+    aria-roledescription="carousel"
+    aria-label="{{ ariaLabel }}"
+    x-id="['carousel-slide', 'carousel-indicator']"
+    x-data="{
+        currentSlideIndex: 1,
+        init() {
+            this.$nextTick(() => this.select(1))
+        },
+        select(i) {
+            this.currentSlideIndex = i;
+        },
+        isSelected(i) {
+            return this.currentSlideIndex === i
+        },
+        stopVideos() {
+            document.querySelectorAll('iframe').forEach(v => { v.src = v.src });
+            document.querySelectorAll('video').forEach(v => { v.pause() });
+        },
+        previous() {
+            if (this.currentSlideIndex > 1) {
+                this.currentSlideIndex = this.currentSlideIndex - 1
+            } else {
+                // If it's the first slide, go to the last slide
+                this.currentSlideIndex = {{ props.slides | length }}
+            }
+            this.stopVideos()
+        },
+        next() {
+            if (this.currentSlideIndex < {{ props.slides | length }}) {
+                this.currentSlideIndex = this.currentSlideIndex + 1
+            } else {
+                // If it's the last slide, go to the first slide
+                this.currentSlideIndex = 1
+            }
+            this.stopVideos()
+        },
+    }"
+    {{ loopAttrs(attrs) }}
+    class="@container relative w-full flex flex-col grow {{ attrs.class }} {{ carouselStyles }}">
+
+{# slides ------------------ #}
+
+    <div
+        aria-atomic="false"
+        aria-live="polite"
+        tabindex="0"
+        {% if indicators %}
+            aria-label="slides"
+        {% endif %}
+        class="relative grid grid-overlap grow">
+
+        {# loading svg #}
+        <div data-loader class="animate-spin text-neutral text-body-lg place-self-center z-(--z-lowered)">{{ icon({glyph:"progress_activity"}) }}</div>
+
+        {# slide #}
+        {% for item in props.slides %}
+            <div
+                x-data="{ id: $id('carousel-slide', {{ loop.index }})}"
+                aria-label="{{ loop.index }} of {{ loop.length }}"
+                aria-roledescription="slide"
+                {% if indicators %}
+                    aria-labelledby="carousel-indicator-{{ loop.index }}"
+                    role="tabpanel"
+                {% else %}
+                    role="group"
+                {% endif %}
+                :id="id"
+                :class="currentSlideIndex !== {{ loop.index }} && 'invisible opacity-0'"
+                class="flex w-full transition duration-250 transition-discrete"
+                {{ loopAttrs(attrs) }}>
+
+                {# slide macro #}
+                {{ props.macro(item,{class:"w-full"}) }}
+            </div>
+        {% endfor %}
+
+    </div>
+
+{# controls bar ------------------ #}
+
+    {% if props.slides.length > 1 %}
+        <div class="{{ controlsStyles }}">
+
+            {# previous button #}
+            {{ button(
+                props={
+                    label: buttonPreviousLabel,
+                    type: buttonProps.type,
+                    size: buttonProps.size,
+                    variant: buttonProps.variant,
+                    glyph: "arrow_back",
+                    tooltip:"Previous slide"
+                },
+                attrs={
+                    "@click": "previous()",
+                    "class": buttonStyles
+                }
+            ) }}
+
+            {# tablist #}
+            {% if indicators %}
+                <div
+                    role="tablist"
+                    @keydown.right.prevent.stop="$focus.wrap().next()"
+                    @keydown.left.prevent.stop="$focus.wrap().prev()"
+                    @keydown.home.prevent.stop="$focus.first()"
+                    @keydown.page-up.prevent.stop="$focus.first()"
+                    @keydown.end.prevent.stop="$focus.last()"
+                    @keydown.page-down.prevent.stop="$focus.last()"
+                    aria-label="Choose slide to display"
+                    class="flex self-center justify-self-center justify-center items-center overflow-x-auto {{ indicatorRowStyles }}">
+                    {% for slide in props.slides %}
+                        <button
+                            :id="$id('carousel-indicator', {{ loop.index }})"
+                            role="tab"
+                            aria-label="Slide {{ loop.index }}"
+                            :aria-selected="isSelected({{ loop.index }})"
+                            :aria-controls="$id('carousel-slide', {{ loop.index }})"
+                            @focus="select({{ loop.index }})"
+                            :tabindex="isSelected({{ loop.index }}) ? 0 : -1"
+                            class="grid place-content-center min-w-6 aspect-square">
+                            <div
+                                :class="isSelected({{ loop.index }}) && '{{ indicatorCheckedStyles }}'"
+                                class="flex items-center {{ indicatorStyles }}">
+                            </div>
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# next button #}
+            {{ button(
+                props={
+                    label: buttonNextLabel,
+                    type: buttonProps.type,
+                    size: buttonProps.size,
+                    variant: buttonProps.variant,
+                    glyph: "arrow_forward",
+                    tooltip: "Next slide",
+                    glyphPosition: "end"
+                },
+                attrs={
+                    "@click": "next()",
+                    "class": buttonStyles
+                }
+            ) }}
+
+        </div>
+    {% endif %}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set carouselMeta = {
+    args: '{{ carousel(
+    props={
+        macro: figure,
+        slides: [{}],
+        indicators: true,
+        ariaLabel: "",
+    },
+    attrs={}
+) }}',
+description: "
+- `props.macro` should be the template each slide uses. In a basic carousel it should probably be `figure`.
+- Expects `props.slides` to be an array of the `props` objects for the macro defined in `props.macro`.
+- `props.indicators` shows or hides the indicator dots.
+"
+} %}

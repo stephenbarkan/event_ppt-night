@@ -1,0 +1,48 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro toTopFab(props={}, attrs={}) %}
+
+{# Values ----------- #}
+
+{% set themeStyles = "lg:bottom-xs bottom-tube-lg-y pb-safe-area-bottom max-lg:-translate-y-xs right-xs" %}
+
+{% set buttonProps = {
+    glyph:"vertical_align_top",
+    size:"fab",
+    tooltip:"Scroll to top"
+} %}
+
+{% set toTopFabTransitionStyles %}
+    x-transition:enter="ease-in duration-200"
+    x-transition:enter-start="opacity-0 translate-y-xs"
+    x-transition:leave="ease-out duration-0"
+    x-transition:leave-end="opacity-0"
+{% endset%}
+
+{# ------------------ #}
+
+<div
+    x-cloak
+    x-show="hasScrolled"
+    {{ toTopFabTransitionStyles | safe }}
+    {{ loopAttrs(attrs) }}
+    class="fixed z-(--z-top) transition opacity {{ attrs.class }} {{ themeStyles }}">
+    {{ button(buttonProps,{"@click": "window.scrollTo({top: 0})"}) }}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set toTopFabMeta = {
+    args: '{{ toTopFab() }}',
+description: "
+- Can not be visualized since it's a fixed position element, but it's used on this page! Peep the bottom right corner.
+- No `props` needed! It does what it says.
+"
+} %}

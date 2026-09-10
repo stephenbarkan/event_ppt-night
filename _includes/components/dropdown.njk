@@ -1,0 +1,126 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/button.njk" import button %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/markdown.njk" import markdown %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro dropdown(props={}, attrs={}, triggerProps={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set popoverStyleClasses = "bg-surface border border-neutral-light px-tube-base-x py-xs min-w-[175px] shadow-button" %}
+{% set panelMargin = "3xs" %}
+{% set dropdownOpenStyleClasses = "" %}
+{% set dropdownListClasses = "pl-xs gap-xs" %}
+{% set dropdownItemClasses = "list-disc" %}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set dropdownItemProps = {
+    type: "link"
+} if props.dropdownItemProps == null else props.dropdownItemProps %}
+{% set position = ["bottom", "left"] if props.position == null else props.position %}
+
+{# Other  ------------------ #}
+
+{% set positionY %}{% if position.includes("top") %}top{% elseif position.includes("bottom") %}bottom{% endif %}{% endset %}
+{% set positionX %}{% if position.includes("left") %}right{% elseif position.includes("right") %}left{% endif %}{% endset %}
+
+{% set panelMargin %}
+    my-{{ panelMargin }}
+    {% if positionX === "left" %}
+        ml-{{ panelMargin }}
+    {% elseif positionX === "right" %}
+        mr-{{ panelMargin }}
+    {% endif %}
+{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div
+    data-dropdown
+    x-data="{
+        dropdownOpen: false,
+        close() {
+            if (! this.dropdownOpen) return
+            this.$refs.popover.hidePopover()
+            this.dropdownOpen = false
+        },
+    }"
+    x-id="['dropdown']"
+    {{ loopAttrs(attrs) }}
+    :class="dropdownOpen && '{{ dropdownOpenStyleClasses }}'"
+    class="relative max-w-full inline-flex {{ attrs.class }}"
+    :style="{ 'anchor-name': '--' + $id('dropdown')}"
+>
+    {{ button(
+        props=props.buttonProps | assign({toggleValue: "dropdownOpen"}) | assign(props),
+        attrs={
+            "x-ref": "button",
+            ":aria-expanded": "dropdownOpen",
+            ":aria-controls":"$id('dropdown')",
+            "class": "w-full",
+            ":popovertarget": "$id('dropdown')",
+            "@click": "$el.focus()"
+        })
+    }}
+
+    <div
+        x-cloak
+        x-ref="popover"
+        x-on:focusin.window="! $refs.popover.contains($event.target) ? close() : null"
+        @click.stop = "$event.target.tagName.toLowerCase() === 'a' && close()"
+        @beforetoggle="dropdownOpen = !dropdownOpen"
+        popover
+        role="menu"
+        :id="$id('dropdown')"
+        :style="{ 'position-anchor': '--' + $id('dropdown')}"
+        class="max-w-full outline-none [position-try-fallbacks:flip-block] inset-auto top-unset [position-area:{{ positionY }}_span-{{ positionX }}] {{ panelMargin }} {{ popoverStyleClasses }}">
+
+        {% if caller %}
+            {{ caller() | safe }}
+        {% else %}
+
+            <ul class="grid {{ dropdownListClasses }}">
+                {% for item in props.dropdownItems %}
+                    <li class="{{ dropdownItemClasses }}">
+                        {% if item.macro === "button" %}
+                            {{ button(item.props | assign(dropdownItemProps) | assign({size:props.buttonProps.size or props.size, alignment:"left"}), item.attrs | assign({"role": "menuitem"}) ) }}
+                        {% elseif item.macro === "dropdown" %}
+                            {{ dropdown(item.props | assign(dropdownItemProps) | assign({size:props.buttonProps.size or props.size, alignment:"left"}) , item.attrs ) }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set dropdownMeta = {
+    args: '{{ dropdown(
+    props={
+        buttonProps: {
+        label: "",
+    },
+        popoverPosition: ["top", "bottom", "left", "right"],
+        dropdownItems:[
+            { macro:button, props:{}, attrs:{} }
+        ]
+    },
+    attrs={}
+) }}',
+description: "
+- Defaults to displaying buttons in a list
+- Can use `{% caller() %} instead for more complex inner components
+- `position` is an array where you can set the relative positions to the trigger element.
+"
+} %}

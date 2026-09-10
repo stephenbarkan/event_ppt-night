@@ -1,0 +1,28 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{# {% from "components/dialog.njk" import dialog, dialogMeta %} #}
+{% from "components/modal.njk" import modal, modalMeta %}
+{% from "components/button.njk" import button %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "modal",
+    meta: modalMeta
+}) %}
+    {% call modal(
+        props={
+            triggerProps: {label:{off:"Open modal", on:"Close modal"} }
+        },
+        attrs={}
+        ) %}
+            <div class="grid gap-sm px-sm py-sm">
+                <div>Some</div>
+                <div>content</div>
+                <div>inside</div>
+                <div>the modal</div>
+                {{ button({label: "Close modal"},{"@click": "toggleDialog"}) }}
+            </div>
+    {% endcall %}
+{% endcall %}

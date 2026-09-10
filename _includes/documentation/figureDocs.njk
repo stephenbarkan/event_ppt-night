@@ -1,0 +1,22 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/figure.njk" import figure, figureMeta %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "figure",
+    meta: figureMeta
+}) %}
+    {{ figure(
+        props={
+            image: "https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-2.webp",
+            alt: "Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.",
+            caption: "Vibrant abstract painting with swirling red, yellow, and pink hues on a canvas.",
+            focus: "",
+            aspect: ""
+        },
+        attrs={}
+    ) }}
+{% endcall %}

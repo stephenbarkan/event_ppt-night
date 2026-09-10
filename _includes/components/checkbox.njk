@@ -1,0 +1,76 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldsetOptionStyles, fieldsetInputStyles, fieldsetOptionLabelStyles, fieldsetGroupStyles %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro checkbox(props={}, attrs={}) %}
+
+{# Values ----------- #}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set label = null if props.label == null else props.label %}
+{% set description = null if props.description == null else props.description %}
+{% set name = null if props.name == null else props.name %}
+{% set fieldAttrs = null if props.fieldAttrs == null else props.fieldAttrs %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+    <fieldset
+        name="{{ name }}"
+        class="{{ attrs.class }}"
+        {{ loopAttrs(attrs) }}
+    >
+        <div class="{{ directionStyles["column"] }}">
+
+            {% if label %}{{ fieldLabel({tag: "legend", fieldProps:props}) }}{% endif %}
+            {% if description %}{{ fieldDescription(props) }}{% endif %}
+            <div class="flex flex-col {{ fieldsetGroupStyles }}">
+                {% for option in props.options %}
+                    <div
+                        x-data="{
+                            data: {index: {{ loop.index}}, value: '{{ option.value }}' },
+                            id: $id('{{ option.value }}'),
+                            setChecked () {
+                                const arr = {{ name }} {# the array is handled by the alpine state in form #}
+                                return arr.includes(this.data) ? arr.splice(arr.indexOf(this.data), 1) : arr.push(this.data)
+                            }
+                        }"
+                        class="flex {{ fieldsetOptionStyles }}">
+                        <input
+                            :checked="{{ name }}.includes(data)"
+                            x-on:change="setChecked"
+                            :id="id"
+                            type="checkbox"
+                            name="{{ name }}"
+                            value="{{ option.value }}"
+                            {{ loopAttrs(fieldAttrs) }}
+                            class="{{ fieldsetInputStyles }} shrink-0"/>
+                        <label class="{{ fieldsetOptionLabelStyles }} flex items-center" :for="id">{{ option.label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </fieldset>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set checkboxMeta = {
+    args: '{{ checkbox(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        options: [{label: "", value: ""}],
+        fieldAttrs: {}
+    },
+    attrs={}
+) }}',
+description: "
+- If you want access to an array of the selected checkboxes, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+"
+} %}

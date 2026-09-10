@@ -1,0 +1,81 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/section.njk" import section %}
+{% from "components/container.njk" import container %}
+{% from "components/dialog.njk" import dialog %}
+{% from "components/divider.njk" import divider %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro bottomSheet(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set bottomSheetStyles = "bg-surface border-t border-x border-neutral-light rounded-t-lg w-full min-h-tube-lg-y" %}
+
+{# Other ------------------ #}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set triggerProps = {
+    label:{off: "Open Bottom Sheet", on: "Close Bottom Sheet"},
+    glyph: {off: "keyboard_arrow_up", on: "keyboard_arrow_down"},
+    type:"link",
+    variant: "neutral"
+} if not props.triggerProps else props.triggerProps %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-bottomSheet {{ loopAttrs(attrs) }} class="{{ attrs.class }} {{ bottomSheetStyles }} fixed bottom-0 z-(--z-elevated) w-full pb-safe-area-bottom flex flex-col justify-center">
+{% call dialog(
+        props={
+            ariaLabel: "Bottom sheet",
+            alignment: "bottom",
+            triggerProps: triggerProps
+        },
+        attrs={class:"w-full grow"}
+    ) %}
+        <div class="flex items-center min-h-tube-lg-y">{{ button(triggerProps | assign({toggleValue: "dialogOpen"}), {class:"w-full", "@click": "toggleDialog", "x-ref":"trigger"}) }}</div>
+        {{ divider() }}
+        {% call section({},{class:"gap-2xs grow overflow-y-auto"}) %}
+            {{ caller() | safe }}
+        {% endcall %}
+    {% endcall %}
+</div>
+
+{% endmacro %}
+
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set bottomSheetMeta = {
+    args: '{% call bottomSheet(
+    props={
+        triggerProps: {
+            toggleValue: "",
+            label: {off: "", on: ""},
+            icon: {off: "", on: ""},
+            tooltip: "",
+            type: "button | link",
+            size: "base | lg | sm | inherit",
+            variant: "",
+            iconPosition: "start | end"
+        }
+    },
+    attrs={}
+
+    {% call container({}) %}
+
+    {% endcall %}
+
+) %}
+{% endcall %}',
+description: "
+- A wrapper for `dialog` that's designed specifically to be a bottom sheet / table of contents type component. Can't be visualized because it's `fixed` position. But resize this page to a narrow width to see the one integrated in the page!
+- `props.triggerProps` is for the open/close button.
+"
+} %}

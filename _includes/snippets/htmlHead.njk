@@ -1,0 +1,26 @@
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set pageDescription %}{% if data.seoDescription %}{{ data.seoDescription | safe }}{% else %}{{ global.siteDescription | safe }}{% endif %}{% endset %}
+{% set pageTitle %}{% if data.seoTitle %}{{ data.seoTitle }} – {% elseif title %}{{ title }} – {% endif %} {{ pageDescription }} • {{ global.siteTitle }}{% endset %}
+{% set ogImage %}{{- global.siteDomain -}}{% if seo.ogImage %}{{- seo.ogImage -}}{% else %}{{- global.siteImage -}}{% endif %}{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ pageTitle | safe }}</title>
+<meta name="description" content="{{ pageDescription }}">
+<link rel="canonical" href="{{ "" if global.siteDomain === "localhost:8080" else global.siteDomain }}{{ page.url }}">
+<meta property="og:title" content="{{ pageTitle | safe }}"/>
+<meta property="og:description" content="{{ pageDescription }}"/>
+<meta property="og:url" content="{{ global.siteDomain }}{{ page.url }}">
+<meta property="og:image" content="{{ ogImage }}"/>
+<meta property="og:image:secure_url" content="{{ ogImage }}">
+<meta property="og:type" content="{% if ogType %}{{ ogType }}{% else %}website{% endif %}"/>
+<meta name="generator" content="{{ eleventy.generator }}">
+<link rel="icon" type="image/x-icon" href="{{ "" if global.siteDomain === "localhost:8080" else global.siteDomain }}{{ global.favicon }}">
+<meta name="theme-color" content="{{ global.themeColor }}">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/styles.css">
+{% include "snippets/fonts.njk" %}

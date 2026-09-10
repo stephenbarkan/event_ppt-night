@@ -1,0 +1,11 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/section.njk" import section, sectionMeta %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{{ componentDocumentation({
+    title: "section",
+    meta: sectionMeta
+}) }}

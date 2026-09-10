@@ -1,0 +1,50 @@
+{% from "components/search.njk" import search %}
+<div
+    x-data="{
+        search: new URLSearchParams(window.location.search).get('q') ? new URLSearchParams(window.location.search).get('q').toLowerCase() : '',
+    }"
+    class="flex flex-col items-start w-full gap-lg py-lg">
+    <form
+        method='POST'
+        name='search'
+        :action='`/search/?q=` + search'
+        class="w-full">
+        {{ search(
+            props={
+                name: "search",
+                fieldAttrs: {
+                    placeholder: "Search"
+                }
+            },
+            attrs={}
+        ) }}
+    </form>
+
+
+    {% call markdown({
+        overrides: {
+            h2Size:"text-heading-sm",
+            h2FontWeight:"font-weight-semibold"
+        }
+    },{class:"w-full"}) %}
+        <ul>
+            <li><a href="/posts">All posts</a></li>
+        </ul>
+
+        <h2>Tags</h2>
+        <ul>
+            {% for tag, posts in collections.postsByTag %}
+                {% set href = "/tag/" + tag | slugify %}
+                <li><a href="{{ href }}">{{ tag }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <h2>Years</h2>
+        <ul>
+            {% for year, posts in collections.postsByYear %}
+                {% set href = "/year/" + year | slugify %}
+                <li><a href="{{ href }}">{{ year }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endcall %}

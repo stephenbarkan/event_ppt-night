@@ -1,0 +1,58 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldPadding, fieldDescription, directionStyles, fieldStyles, fieldWrapperStyles %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro input(props={}, attrs={}) %}
+
+<div
+    {% if props.fieldAttrs.value %}x-init="{{ props.name }}='{{ props.fieldAttrs.value }}'"{% endif %}
+    {{ loopAttrs(attrs) }}
+    class="{% if props.direction %}{{ directionStyles[props.direction] }}{% else %}{{ directionStyles['column'] }}{% endif %} {{ attrs.class }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "label", fieldProps:props}) }}{% endif %}
+
+    <span class="{{ fieldWrapperStyles }}">
+        <input
+            x-model="{{ props.name }}"
+            name="{{ props.name }}"
+            id="{{ props.name }}"
+            {{ loopAttrs(props.fieldAttrs) }}
+            class="{{ fieldStyles }} {{ fieldPadding }} {{ props.fieldAttrs.class }}"
+        >
+    </span>
+
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set inputMeta = {
+    args: '{{ input(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        fieldAttrs: {
+            type: "",
+            placeholder: "",
+            required: boolean,
+            min: "",
+            max: "",
+            autocomplete: "on | off",
+            inputmode="numeric | decimal | tel | email | url"
+        },
+        direction: "column | row"
+    },
+    attrs={}
+) }}',
+description: "
+- `props.fieldAttrs.type` can be most of the types listed [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#input_types).
+- If you want access to the value, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+- If you set `props.direction` to `row`, you must define the grid columns too using the `attrs` object.
+"
+} %}

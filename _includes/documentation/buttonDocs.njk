@@ -1,0 +1,25 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/button.njk" import button, buttonMeta %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "button",
+    meta: buttonMeta
+}) %}
+    <div
+        x-data="{toggleValue: false, otherToggleValue: false}"
+        class="grid grid-cols-2 gap-xs justify-around w-full place-items-center">
+        {{ button({label: "Button"}) }}
+        {# {{ button({label: "With icon", glyph:"keyboard_arrow_down", glyphPosition:"end"}) }} #}
+        {{ button({label: "Small", size:"sm", glyph:"circle"}) }}
+        {{ button({label: "Large", size:"lg", glyph:"circle"}) }}
+        {{ button({toggleValue:"otherToggleValue", glyph: {on:"check_circle", off:"circle"} }, {"@click": "otherToggleValue = !otherToggleValue"}) }}
+        {{ button({toggleValue:"toggleValue", label: "Toggleable", glyph: {on:"check_circle", off:"circle"} }, {"@click": "toggleValue = !toggleValue"}) }}
+        {{ button({label: "With tooltip", tooltip:"I’m a tooltip!"}) }}
+        {{ button({label: "Neutral", type:"link", variant: "neutral"}) }}
+        {{ button({label: "Link", type: "link"}) }}
+    </div>
+{% endcall %}

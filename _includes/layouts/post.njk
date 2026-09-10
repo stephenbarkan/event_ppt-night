@@ -1,0 +1,40 @@
+{% extends "layouts/base.njk" %}
+
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/markdown.njk" import markdown %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% block content %}
+
+    {# page title #}
+    {% call section({}, {class:"py-base-y"}) %}
+        {% call container() %}
+            {% call textLockup({
+                size: "lg",
+                eyebrow: tags | tagsList | join(", "),
+                title: title,
+                elaboration: elaboration
+            }) %}
+                {% block ctaButton %}{% endblock %}
+            {% endcall %}
+
+        {% endcall %}
+    {% endcall %}
+
+    {% block pageContent %}
+        {% call section({}, {class:""}) %}
+            {% call container() %}
+                {{ markdown(
+                    props={content: content, transform: false}
+                ) }}
+            {% endcall %}
+        {% endcall %}
+    {% endblock %}
+
+{% endblock %}

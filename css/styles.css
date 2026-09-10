@@ -1,0 +1,71 @@
+@import "tailwindcss";
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+@import "tw-fade";
+@import "./theme.css";
+
+@layer components {
+  @import "./components.css";
+  @import "./markdown.css";
+}
+
+@layer base {
+  :focus-visible,
+  :focus-within {
+    outline-color: var(--color-text-link);
+  }
+
+  :not(:has(*)),
+  :is(p, h1, h2, h3, h4, h5, h6, span, label, sup, li) {
+    text-box: trim-both cap alphabetic;
+  }
+}
+
+@utility animate-duration-* {
+  --animate-duration: calc(--value(integer) * 1s);
+}
+
+@utility grid-overlap {
+  & > * {
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+  }
+}
+
+@utility grid-col-* {
+  grid-column: --value(--grid-column-*);
+}
+
+@utility gap-inherit {
+  gap: inherit;
+}
+
+@utility items-center {
+  align-items: safe center;
+}
+@utility justify-center {
+  justify-content: safe center;
+}
+
+@utility bg-* {
+  background-color: --value(--color-bg-*);
+}
+@utility border-* {
+  border-color: --value(--color-border-*);
+}
+@utility ring-* {
+  --tw-ring-color: --value(--color-border-*);
+}
+@utility text-* {
+  color: --value(--color-text-*);
+  line-height: --value(--text-* --line-height);
+}
+
+@layer utilities {
+  [x-cloak] {
+    display: none !important;
+  }
+
+  .\@container-scroll {
+    container-type: scroll-state;
+  }
+}

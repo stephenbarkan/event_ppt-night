@@ -1,0 +1,352 @@
+@import "./color-tokens.css";
+@import "./responsive-type.css";
+@import "./responsive-space.css";
+
+:root {
+  color-scheme: light;
+
+  /* Typography -------------------------------------------------------------------------------------------------------------------------- */
+
+  --body--font-weight: 400;
+  --body-icon--font-weight: 300;
+  --body-icon--scale: 1.4;
+
+  --heading--font-weight: 600;
+  --heading-icon--font-weight: 325;
+  --heading-icon--scale: 1.4;
+
+  --button-icon--font-weight: 325;
+  --button-icon--scale: 1.35;
+
+  --body-sm--font-size-min: 17.5px;
+  --body-sm--font-size-max: 20px;
+  --body-sm--line-height-min: 1.25;
+  --body-sm--line-height-max: 1.25;
+  --body-sm--letter-spacing: 0;
+
+  --body-base--font-size-min: 20px;
+  --body-base--font-size-max: 21px;
+  --body-base--line-height-min: 1.4;
+  --body-base--line-height-max: 1.5;
+  --body-base--letter-spacing: -0.005em;
+
+  --body-lg--font-size-min: 20px;
+  --body-lg--font-size-max: 24px;
+  --body-lg--line-height-min: 1.4;
+  --body-lg--line-height-max: 1.4;
+  --body-lg--letter-spacing: -0.005em;
+
+  --heading-sm--font-size-min: 20px;
+  --heading-sm--font-size-max: 24px;
+  --heading-sm--line-height-min: 1.3;
+  --heading-sm--line-height-max: 1.3;
+  --heading-sm--letter-spacing: 0;
+
+  --heading-base--font-size-min: 24px;
+  --heading-base--font-size-max: 36px;
+  --heading-base--line-height-min: 1.3;
+  --heading-base--line-height-max: 1.3;
+  --heading-base--letter-spacing: 0;
+
+  --heading-lg--font-size-min: 48px;
+  --heading-lg--font-size-max: 64px;
+  --heading-lg--line-height-min: 1.1;
+  --heading-lg--line-height-max: 1.1;
+  --heading-lg--letter-spacing: -0.02em;
+
+  --heading-xl--font-size-min: 44px;
+  --heading-xl--font-size-max: 82px;
+  --heading-xl--line-height-min: 1.15;
+  --heading-xl--line-height-max: 1.15;
+  --heading-xl--letter-spacing: -0.02em;
+
+  --button-sm--font-size-min: 17.5px;
+  --button-sm--font-size-max: 20.5px;
+  --button-sm--line-height-min: 1.25;
+  --button-sm--line-height-max: 1.3;
+  --button-sm--letter-spacing: 0;
+
+  --button-base--font-size-min: 20px;
+  --button-base--font-size-max: 22px;
+  --button-base--line-height-min: 1.25;
+  --button-base--line-height-max: 1.3;
+  --button-base--letter-spacing: 0;
+
+  --button-lg--font-size-min: 20px;
+  --button-lg--font-size-max: 22px;
+  --button-lg--line-height-min: 1.25;
+  --button-lg--line-height-max: 1.3;
+  --button-lg--letter-spacing: 0;
+
+  /* Spacings -------------------------------------------------------------------------------------------------------------------------- */
+
+  --space-3xs-min: 0.25rem;
+  --space-3xs-max: 0.375rem;
+
+  --space-2xs-min: 0.45rem;
+  --space-2xs-max: 0.6rem;
+
+  --space-xs-min: 0.75rem;
+  --space-xs-max: 1.25rem;
+
+  --space-sm-min: 1rem;
+  --space-sm-max: 1.75rem;
+
+  --space-base-x-min: 1.25rem;
+  --space-base-x-max: 2.75rem;
+
+  --space-base-y-min: 2rem;
+  --space-base-y-max: 3rem;
+
+  --space-lg-min: 3rem;
+  --space-lg-max: 5rem;
+
+  --space-xl-min: 4rem;
+  --space-xl-max: 8rem;
+
+  /* Sizes -------------------------------------------------------------------------------------------------------------------------- */
+
+  --size-tube-sm-y: calc(var(--body-sm--font-size) * 2.3);
+  --size-tube-sm-x: calc(var(--body-sm--font-size) * 0.65);
+
+  --size-tube-base-y: calc(var(--body-base--font-size) * 3);
+  --size-tube-base-x: calc(var(--body-base--font-size) * 0.8);
+
+  --size-tube-lg-y: calc(var(--body-lg--font-size) * 3);
+  --size-tube-lg-x: calc(var(--body-lg--font-size) * 0.65);
+
+  --size-tube-xl-y: calc(var(--heading-base--font-size) * 2.5);
+  --size-tube-xl-x: calc(var(--heading-base--font-size) * 1);
+}
+
+@theme inline {
+  /* Breakpoints ----------------------------------------------------------------------------------------------------------------------- */
+
+  --breakpoint-xs: 450px; /* Only for stuff that needs to change on really small screens */
+  --breakpoint-sm: 600px; /* The limit for "mobile" styles */
+  --breakpoint-md: 850px; /* Usually the last point I start changing sizes */
+  --breakpoint-lg: 1040px;
+  --breakpoint-xl: 1120px;
+
+  /* Typography ------------------------------------------------------------------------------------------------------------------------ */
+
+  --font-display: monospace;
+  --font-body: monospace;
+  --font-icon: "Material Symbols Sharp";
+
+  --text-body-sm: var(--body-sm--font-size);
+  --text-body-sm--line-height: var(--body-sm--line-height);
+  --text-body-sm--letter-spacing: var(--body-sm--letter-spacing);
+
+  --text-body-base: var(--body-base--font-size);
+  --text-body-base--line-height: var(--body-base--line-height);
+  --text-body-base--letter-spacing: var(--body-base--letter-spacing);
+
+  --text-body-lg: var(--body-lg--font-size);
+  --text-body-lg--line-height: var(--body-lg--line-height);
+  --text-body-lg--letter-spacing: var(--body-lg--letter-spacing);
+
+  --text-heading-sm: var(--heading-sm--font-size);
+  --text-heading-sm--line-height: var(--heading-sm--line-height);
+  --text-heading-sm--letter-spacing: var(--heading-sm--letter-spacing);
+
+  --text-heading-base: var(--heading-base--font-size);
+  --text-heading-base--line-height: var(--heading-base--line-height);
+  --text-heading-base--letter-spacing: var(--heading-base--letter-spacing);
+
+  --text-heading-lg: var(--heading-lg--font-size);
+  --text-heading-lg--line-height: var(--heading-lg--line-height);
+  --text-heading-lg--letter-spacing: var(--heading-lg--letter-spacing);
+
+  --text-heading-xl: var(--heading-xl--font-size);
+  --text-heading-xl--line-height: var(--heading-xl--line-height);
+  --text-heading-xl--letter-spacing: var(--heading-xl--letter-spacing);
+
+  --text-button-sm: var(--button-sm--font-size);
+  --text-button-sm--line-height: var(--button-sm--line-height);
+  --text-button-sm--letter-spacing: var(--button-sm--letter-spacing);
+
+  --text-button-base: var(--button-base--font-size);
+  --text-button-base--line-height: var(--button-base--line-height);
+  --text-button-base--letter-spacing: var(--button-base--letter-spacing);
+
+  --text-button-lg: var(--button-lg--font-size);
+  --text-button-lg--line-height: var(--button-lg--line-height);
+  --text-button-lg--letter-spacing: var(--button-lg--letter-spacing);
+
+  /* Color ----------------------------------------------------------------------------------------------------------------------------- */
+
+  --color-*: initial;
+  --color-current: currentColor;
+  --color-inherit: inherit;
+  --color-transparent: transparent;
+  --color-black: black;
+  --color-white: white;
+
+  /* Text ------------------------------------ */
+
+  --color-text-neutral: lch(from var(--color-neutral) l c h / 1);
+  --color-text-neutral-light: lch(from var(--color-neutral) l c h / 0.8);
+
+  --color-text-hue: lch(from var(--color-hue) l c h / 1);
+  --color-text-hue-light: lch(from var(--color-hue) l c h / 0.7);
+
+  --color-text-surface: lch(from var(--color-surface) calc(l + 9) c h / 1);
+
+  --color-text-link: lch(from var(--color-neutral) l c h / 1);
+  --color-text-validation: var(--color-red-500);
+
+  /* Border ------------------------------------ */
+
+  --color-border-neutral: lch(from var(--color-neutral) l c h / 1);
+  --color-border-neutral-light: lch(from var(--color-neutral) l c h / 0.7);
+
+  --color-border-hue: lch(from var(--color-hue) l c h / 1);
+  --color-border-hue-light: lch(from var(--color-hue) l c h / 0.7);
+
+  /* Background ------------------------------------ */
+
+  --color-bg-neutral: lch(from var(--color-neutral) l c h / 1);
+  --color-bg-neutral-light: lch(from var(--color-neutral) l c h / 0.9);
+
+  --color-bg-hue: lch(from var(--color-hue) l c h / 0.9);
+  --color-bg-hue-light: lch(from var(--color-hue) l c h / 0.8);
+
+  --color-bg-surface: lch(from var(--color-surface) l c h / 1);
+
+  /* Container ------------------------------------------------------------------------------------------------------------------------- */
+
+  --container-*: initial;
+  --container-sm: 70rem;
+  --container-base: 100rem;
+  --container-content: 58ch;
+
+  --grid-column-content: content;
+  --grid-column-full: full-width;
+  --grid-column-pl: full-width-start / content-start;
+  --grid-column-pr: content-end / full-width-end;
+  --grid-column-scroller: content-start / full-width-end;
+
+  /* Elevation --------------------------------------------------------------------------------------------------------------------------*/
+
+  --z-lowered: -10;
+  --z-elevated: 20;
+  --z-sticky: 30;
+  --z-top: 40;
+  --z-top-elevated: 50;
+
+  /* Effects --------------------------------------------------------------------------------------------------------------------------- */
+
+  --shadow-*: initial;
+  --blur-*: initial;
+
+  --shadow-button: 0 1px rgb(0 0 0 / 0.05);
+
+  /* Border width -------------------------------------------------------------------------------------------------------------------------- */
+
+  --default-border-width: 1.5px;
+
+  /* Spacing: --------------------------------------------------------------------------------------------------------------------------- */
+
+  /* System ------------------ */
+  --spacing-inherit: inherit;
+  --spacing-unset: unset;
+  --spacing-cqi: 100cqi;
+  --spacing-navbar: var(--space-navbar);
+  --spacing-dvh-nav: calc(100dvh - var(--space-navbar));
+  --spacing-indent: 1.5ch;
+  --spacing-lh: 1lh;
+  --spacing-safe-area-bottom: env(safe-area-inset-bottom);
+
+  /* Scale ------------------ */
+  --spacing-none: 0;
+  --spacing-px: var(--default-border-width);
+  --spacing-3xs: var(--space-3xs);
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-base-x: var(--space-base-x);
+  --spacing-base-y: var(--space-base-y);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+
+  /* Icon ------------------------------------------------------------------------------------------------------------------------------ */
+
+  --spacing-icon: calc(1em * var(--icon-scale));
+
+  /* Tube ------------------------------------------------------------------------------------------------------------------------------ */
+
+  --spacing-tube-sm-x: var(--size-tube-sm-x);
+  --spacing-tube-base-x: var(--size-tube-base-x);
+  --spacing-tube-lg-x: var(--size-tube-lg-x);
+
+  --spacing-tube-sm-y: var(--size-tube-sm-y);
+  --spacing-tube-base-y: var(--size-tube-base-y);
+  --spacing-tube-lg-y: var(--size-tube-lg-y);
+  --spacing-tube-xl-y: var(--size-tube-xl-y);
+
+  /* Aspect ratio ---------------------------------------------------------------------------------------------------------------------- */
+
+  --aspect-square: 1;
+
+  /* Radii ----------------------------------------------------------------------------------------------------------------------------- */
+
+  --radius-*: initial;
+  --radius-sm: calc(var(--size-tube-sm-y) * 0.225);
+  --radius-base: calc(var(--size-tube-base-y) * 0.225);
+  --radius-lg: calc(var(--size-tube-lg-y) * 0.225);
+  --radius-full: 9999px;
+
+  /* Animations ------------------------------------------------------------------------------------------------------------------------ */
+
+  --ease-*: initial;
+  --default-transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --default-transition-duration: 100ms;
+  --ease-out: cubic-bezier(0.25, 0, 0.75, 0.25);
+  --ease-in: cubic-bezier(0.25, 0.75, 0.75, 1);
+  --animate-marquee: marquee var(--animate-duration, 1s) infinite linear;
+  --animate-spin: spin var(--animate-duration, 1s) infinite linear;
+  --animate-wave: wave var(--animate-duration, 1s) infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes wave {
+    0%,
+    50%,
+    100% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-1rem);
+    }
+    75% {
+      transform: translateY(1rem);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(359deg);
+    }
+  }
+}
+
+/* Theme-specific -------------------------------------------------------------------------------------------------------------------------- */
+
+@utility text-heading-sm {
+  font-weight: var(--body--font-weight);
+}
+
+@layer utility {
+  [class*="rounded-"] {
+    corner-shape: superellipse(1.3);
+  }
+}

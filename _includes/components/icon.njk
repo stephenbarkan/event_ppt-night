@@ -1,0 +1,29 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro icon(props={},attrs={}) %}
+
+    <svg data-icon
+        alt="{{ props.glyph | replace("_", " ") }} icon"
+        {{ loopAttrs(attrs) }}
+        class="{{ attrs.class }} text-icon w-icon h-icon -mx-[.25em] fill-current select-none shrink-0"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <text x="0%" y="50%" font-size="24" dominant-baseline="central" text-anchor="start">{{ props.glyph }}</text>
+    </svg>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set iconMeta = {
+    args: '{{ icon(props={glyph: ""} ,attrs={}) }}',
+description: "
+- `props.glyph` should be the name of a glyph from the [Material Symbols library](https://fonts.google.com/icons). Must include the glyph name in the `_data/icons.json` file array so the font is loaded properly.
+- The size of the icon is determined by its nearest ancestor's font size. The mutliplier is set in `theme.css`.
+- The icon color is set by using `text-*` utility classes, or inherited from an ancestor.
+"
+} %}

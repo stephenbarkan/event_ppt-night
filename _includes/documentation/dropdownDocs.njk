@@ -1,0 +1,28 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/dropdown.njk" import dropdown, dropdownMeta %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "dropdown",
+    meta: dropdownMeta
+}) %}
+<div class="flex flex-col justify-end">
+    {{ dropdown(
+        props={
+            size:"base",
+            buttonProps: {
+                label: "Dropdown"
+            },
+            position: ["bottom","left"],
+            dropdownItems:[
+                { macro: "button", props:{label:"#dialog", type:"link"}, attrs: {href: "#dialog"} },
+                { macro: "button", props:{label:"#dropdown", type:"link"}, attrs: {href: "#dropdown"} },
+                { macro: "button", props:{label:"#figure", type:"link"}, attrs: {href: "#figure"} }
+            ]
+        }
+    )}}
+    </div>
+{% endcall %}

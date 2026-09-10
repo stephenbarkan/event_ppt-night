@@ -1,0 +1,67 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldWrapperStyles %}
+{% from "components/icon.njk" import icon %}
+{% from "components/button.njk" import button %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro search(props={}, attrs={}) %}
+
+{# Values -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set fieldPadding = "pl-tube-base-x pr-3xs gap-tube-base-x" %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div
+    {% if props.fieldAttrs.value %}x-init="{{ props.name }}='{{ props.fieldAttrs.value }}'"{% endif %}
+    {{ loopAttrs(attrs) }}
+    class="{% if props.direction %}{{ directionStyles[props.direction] }}{% else %}{{ directionStyles['column'] }}{% endif %} {{ attrs.class }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "label", fieldProps:props}) }}{% endif %}
+
+    <span class="{{ fieldWrapperStyles }}">
+        <span class="{{ fieldStyles }} {{ fieldPadding }} has-[input:focus]:outline">
+            {{ icon(props={glyph: "search"} ,attrs={}) }}
+            <input
+                type="search"
+                x-model="{{ props.name }}"
+                name="{{ props.name }}"
+                id="{{ props.name }}"
+                inputmode="search"
+                enterkeyhint="search"
+                class="{{ props.fieldAttrs.class }} min-w-px grow outline-none h-full"
+                {{ loopAttrs(props.fieldAttrs) }}
+            >
+            {{ button({glyph: "arrow_forward", size:"sm", tooltip:"Submit query", disabled:"!"+props.name},{type:"submit"}) }}
+        </span>
+    </span>
+
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set searchMeta = {
+    args: '{{ search(
+    props={
+        name: "search",
+        label: "",
+        description: "",
+        fieldAttrs: {
+            placeholder: "Search"
+        },
+        direction: "column | row"
+    },
+    attrs={}
+) }}',
+description: "
+- If you want access to the value, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+- Wrap the component in a `<form>` with the `action` property set to :action='/search/?q=' + {{ props.name }}
+- If you set `props.direction` to `row`, you must define the grid columns too using the `attrs` object.
+"
+} %}

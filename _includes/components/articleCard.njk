@@ -1,0 +1,71 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/figure.njk" import figure %}
+{% from "components/textLockup.njk" import textLockup %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro articleCard(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set articleCardStyles = "border border-neutral-light p-2xs pb-xs gap-xs rounded-base shadow-button bg-surface-light hover:bg-surface hover:border-neutral transition-transform active:scale-[.99]" %}
+{% set contentStyles = "gap-xs" %}
+{% set eyebrowStyles = "text-neutral-light text-body-sm line-clamp-2" %}
+{% set titleStyles = "text-button-base" %}
+
+{# Defaults ------------------ #}
+
+{% set graphic = null if props.figure == null else props.figure %}
+{% set title = null if props.title == null else props.title %}
+{% set href = null if props.href == null else props.href %}
+{% set eyebrow = null if props.eyebrow == null else props.eyebrow %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<li data-articleCard
+    {{ loopAttrs(attrs) }}
+    class="{{ attrs.class }} {{ articleCardStyles }} grid grid-rows-subgrid row-span-2 relative">
+
+    {% if graphic %}
+        {{ figure(
+            props=props.figure | assign({lazy: true}),
+            attrs={}
+        ) }}
+    {% endif %}
+
+    <div class="flex flex-col items-start {{ contentStyles }}">
+        {% call button({type:"link", variant:"neutral", alignment:"start"},{href:href, class: "justify-self-start"}) %}
+            <span class="absolute inset-0"></span>
+            <h3 class="{{ titleStyles }}">{{ title }}</h3>
+        {% endcall %}
+        <p class="mt-auto {{ eyebrowStyles }}">{{ eyebrow }}</p>
+    </div>
+</li>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set articleCardMeta = {
+    args: '{% call articleCard(
+    props={
+        figure: {
+            img: "",
+            alt: "",
+            aspect: "aspect-square",
+            focus: "focus-"
+        },
+        title: "",
+        eyebrow: "",
+        href:""
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: ""
+} %}

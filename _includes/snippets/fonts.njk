@@ -1,0 +1,20 @@
+{# Icon font -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set comma = joiner() %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names={% for icon in icons | sort() %}{{ comma() }}{{ icon }}{% endfor %}&display=block" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+{# Theme fonts -------------------------------------------------------------------------------------------------------------------------- #}
+
+<style>
+{# @font-face {
+  font-family: MysterionBohemian;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/assets/mysterionbohemian-webfont.woff") format("woff"),
+    url("/assets/mysterionbohemian-webfont.woff2") format("woff2");
+} #}
+</style>

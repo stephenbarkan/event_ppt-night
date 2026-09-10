@@ -1,0 +1,45 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro section(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set sectionStyles = "w-full @container" %}
+
+{# Other ------------------ #}
+
+{% set tag %}{{ props.tag if props.tag else "section" }}{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<{{ tag }} data-section
+    {{ loopAttrs(attrs) }}
+    class="grid
+        {{ attrs.class }}
+        {{ sectionStyles }}
+    ">
+    {{ caller() | safe }}
+</{{ tag }}>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set sectionMeta = {
+    args: '{% call section(
+    props={tag:"",},
+    attrs={class:""}
+) %}
+{% endcall %}',
+description: "
+- Children just most likely by `container` or `divider`
+- `props.tag` sets what the HTML tag should be. Defaults to `section`.
+"
+} %}

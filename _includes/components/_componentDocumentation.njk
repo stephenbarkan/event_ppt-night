@@ -1,0 +1,49 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/container.njk" import container %}
+{% from "components/markdown.njk" import markdown %}
+{% from "components/copyToClipboard.njk" import copyToClipboard %}
+{% from "components/button.njk" import button %}
+{# {% from "components/accordion.njk" import accordion %} #}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro componentDocumentation(props={}) %}
+
+    <section tabindex="0" class="grid w-full gap-sm max-lg:scroll-m-section max-w-content">
+        <h2 id="{{ props.title }}" class="text-heading-base">{{ props.title }}</h2>
+
+        <div class="flex flex-col gap-base-y">
+        {% if caller %}
+            {% set example %}
+                <div data-section class="grid @container border place-items-center place-content-center gap-sm border-neutral-light py-base-x grow">
+                    {{ caller() | safe }}
+                </div>
+            {% endset %}
+
+            {{ example | safe }}
+        {% endif %}
+
+            {% call markdown() %}
+                <h3>Import code</h3>
+                {% call copyToClipboard({copyRef: "copyMe", toastMessage: "Copied import code to clipboard!"}, {class:"relative w-full"}) %}
+                    <pre><code x-ref="copyMe">{% raw %}{%{% endraw %} from "components/{{ props.title }}.njk" import {{ props.title}} {% raw %}%}{% endraw %}</code></pre>
+                    {{ button({size:"sm", label: "Copy"},{@click:"copy", class:"absolute top-1/2 -translate-y-1/2 right-3xs"}) }}
+                {% endcall %}
+
+                    <h3>Arguments</h3>
+                {% call copyToClipboard({copyRef: "copyMe", toastMessage: "Copied instance to clipboard!"}, {class:"relative w-full"}) %}
+                    <pre><code tabindex="-1" x-ref="copyMe" class="overflow-y-auto max-h-62">{{ props.meta.args }}</code></pre>
+                    {{ button({size:"sm", label: "Copy"},{@click:"copy", class:"absolute top-3xs right-3xs"}) }}
+                {% endcall %}
+
+                {% if props.meta.description %}
+                    <h3>Implementation notes</h3>
+                    {{ props.meta.description | trim | markdownify | safe }}
+                {% endif %}
+            {% endcall %}
+
+        </div>
+    </section>
+
+{% endmacro %}

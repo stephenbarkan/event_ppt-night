@@ -1,0 +1,18 @@
+:root {
+  --color-black: black;
+  --color-white: white;
+
+  --color-grey-500: #010101;
+  --color-grey-400: #777;
+  --color-grey-300: #b5b5b5;
+  --color-grey-200: #ebebeb;
+  --color-grey-100: #fafafa;
+
+  --color-red-500: #e4002b;
+
+  --color-blue-500: #0000ee;
+
+  --color-hue: color(display-p3 0.831373 0.278431 0.423529 / 1);
+  --color-neutral: color(display-p3 0.552941 0.203922 0.278431 / 1);
+  --color-surface: color(display-p3 0.976471 0.835294 0.901961 / 1);
+}

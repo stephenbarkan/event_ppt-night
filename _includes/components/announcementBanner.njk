@@ -1,0 +1,70 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/button.njk" import button %}
+{% from "components/container.njk" import container %}
+{% from "components/markdown.njk" import markdown %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro announcementBanner(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set bannerStyles = "bg-neutral-light py-xs border-y border-neutral-light" %}
+
+{% set closeButtonProps = {
+    tooltip: "Dismiss announcement banner",
+    icon:"close_small",
+    size:"sm"
+} %}
+
+{% set position %}
+    {% if props.position === "bottom" %}
+        fixed bottom-0
+    {% else %}
+        top-0
+    {% endif %}
+{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<template
+    x-data="{ showBanner: $persist(true).as('ab-{{ props.content | slugify }}') }"
+    x-if="showBanner">
+    <div
+        data-announcement-banner
+        {{ loopAttrs(attrs) }}
+        class="w-full {{ position }} z-(--z-sticky) {{ bannerStyles }} {{ attrs.class }}">
+        {% call section() %}
+            {% call container({size:"base"}) %}
+                <div class="flex items-center justify-between">
+                    {% if caller %}
+                        {{ caller() | safe }}
+                    {% else %}
+                        {{ markdown({content: props.content, transform: true, bodySize:"text-body-sm"},{class:"grow text-center line-clamp-1"}) }}
+                    {% endif %}
+                    {{ button(props=closeButtonProps, attrs={@click:"showBanner = !showBanner", title:"Close announcement banner"}) }}
+                </div>
+            {% endcall %}
+        {% endcall %}
+    </div>
+</template>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set announcementBannerMeta = {
+    args: '{{ announcementBanner(
+    props={
+        content: "",
+        position: "top | bottom"
+    },
+    attrs={}
+) }}',
+description: "
+- Default to using `content` prop for markdownified text, but you can use `{% call %}` to insert custom content.
+- The banner's dismissed state resets when the `global.bannerContent` property is updated.
+"
+} %}

@@ -1,0 +1,107 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldPadding, fieldWrapperStyles %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro incrementer(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+{% set incrementerStyles = "gap-2xs" %}
+{% set buttonStyles = "h-tube-lg-y" %}
+
+{% set buttonProps = {
+    size: "sm"
+} %}
+
+{# Other ------------------ #}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div
+    x-data="{
+        decrement() {
+            {% if props.fieldAttrs.min != null %}
+                if({{ props.name }} > {{ props.fieldAttrs.min }}) {
+                    {{ props.name }} = {{ props.name }} - 1
+                }
+            {% else %}
+                {{ props.name }} = {{ props.name }} - 1
+            {% endif %}
+        },
+        increment() {
+            {% if props.fieldAttrs.max != null %}
+                if({{ props.name }} < {{ props.fieldAttrs.max }}) {
+                    {{ props.name }} = {{ props.name }} + 1
+                }
+            {% else %}
+                {{ props.name }} = {{ props.name }} + 1
+            {% endif %}
+        }
+    }"
+    {% if props.fieldAttrs.value %}x-init="{{ props.name }} = '{{ props.fieldAttrs.value }}'"{% endif %}
+    {{ loopAttrs(attrs) }}
+    class="{% if props.direction %}{{ directionStyles[props.direction] }}{% else %}{{ directionStyles['column'] }}{% endif %} {{ attrs.class }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "label", fieldProps:props}) }}{% endif %}
+
+    <span class="{{ fieldWrapperStyles }} {{ incrementerStyles }} items-center">
+        {{ button(
+            props= buttonProps | assign({glyph: "remove", tooltip:"Decrement value"}),
+            attrs={
+                "@click": "decrement",
+                "type": "button",
+                "class": buttonStyles
+            }
+        ) }}
+        <input
+            x-model.number="{{ props.name }}"
+            name="{{ props.name }}"
+            id="{{ props.name }}"
+            {{ loopAttrs(props.fieldAttrs) }}
+            type="number"
+            class="{{ fieldStyles }} {{ fieldPadding }} {{ props.fieldAttrs.class }} text-center"
+        >
+        {{ button(
+            props= buttonProps | assign({glyph: "add", tooltip:"Increment value"}),
+            attrs={
+                "@click": "increment",
+                "type": "button",
+                "class": buttonStyles
+            }
+        ) }}
+    </span>
+
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+</div>
+
+{% endmacro %}
+
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set incrementerMeta = {
+    args: '{{ incrementer(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        fieldAttrs={
+            placeholder: "",
+            required: boolean,
+            min: "",
+            max: ""
+        },
+        direction: "column | row"
+    },
+    attrs={}
+) }}',
+description: "
+- `props.fieldAttrs.type` can be most of the types listed [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/incrementer#incrementer_types).
+- If you want access to the value, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+"
+} %}

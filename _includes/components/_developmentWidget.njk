@@ -1,0 +1,62 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/dropdown.njk" import dropdown %}
+{% from "components/button.njk" import button %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set themeStyles = "text-body-sm bg-surface border border-neutral-light gap-1 py-2 pl-3 pr-2" %}
+{% set expandedStyles = "translate-0!" %}
+{% set buttonProps = {
+    size: "sm"
+} %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+<div x-data="{
+        expanded: false,
+        windowWidth: window.innerWidth,
+        getWidth() {
+            window.addEventListener('resize', () => {
+                this.windowWidth = window.innerWidth
+            })
+        }
+    }"
+    x-init="getWidth"
+    :class="expanded && '{{ expandedStyles }}'"
+    class="fixed print:hidden left-0 bottom-1 z-(--z-top) -translate-x-[80%] flex items-center transition duration-500 border-l-0 rounded-l-none {{ themeStyles }}">
+    <span class="flex w-full mr-1">
+        <span class="xs:hidden">XS</span>
+        <span class="hidden xs:max-sm:block">SM</span>
+        <span class="hidden sm:max-md:block">MD</span>
+        <span class="hidden md:max-lg:block">LG</span>
+        <span class="hidden lg:block">XL</span>
+        <span>&nbsp;•&nbsp;</span>
+        <span x-text="windowWidth"></span>
+        <span>px</span>
+    </span>
+    {% if devLinks.length > 0 %}
+        {{dropdown({
+            buttonProps:{
+                label: "Dev",
+                size:"sm",
+                glyph:"bug_report"
+            },
+            position:["top", "left"],
+            dropdownItems: devLinks
+        }) }}
+    {% endif %}
+    {{ button(
+        props={
+            type: "button",
+            size: buttonProps.size,
+            variant: buttonProps.variant,
+            glyph: {off:"chevron_forward", on:"chevron_backward"},
+            tooltip:{off: "Expand widget", on:"Retract widget"},
+            toggleValue: "expanded"
+        },
+        attrs={
+            @click:"expanded = !expanded",
+            ":title":"expanded ? 'Minimize widget' : 'Expand widget'"
+        }
+    ) }}
+</div>

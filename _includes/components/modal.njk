@@ -1,0 +1,64 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/section.njk" import section %}
+{% from "components/container.njk" import container %}
+{% from "components/dialog.njk" import dialog %}
+{% from "components/divider.njk" import divider %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro modal(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{# Other ------------------ #}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-modal {{ loopAttrs(attrs) }} class="{{ attrs.class }} {{ modalStyles }}">
+    {% call dialog(
+        props={
+            alignment: "center",
+            triggerProps: props.triggerProps
+        },
+        attrs={class:""}
+        ) %}
+            {{ caller() | safe }}
+    {% endcall %}
+</div>
+
+{% endmacro %}
+
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set modalMeta = {
+    args: '{% call modal(
+    props={
+        triggerProps: {
+            label: {off: "", on: ""},
+            icon: {off: "", on: ""},
+            tooltip: "",
+            type: "button | link",
+            size: "base | lg | sm | inherit",
+            variant: "",
+            iconPosition: "start | end"
+        }
+    },
+    attrs={}
+) %}
+
+    {% call container({size:"base", type: "cols-1", alignment: "center"}) %}
+
+    {% endcall %}
+
+{% endcall %}',
+description: "
+- A wrapper for `dialog` that's designed specifically to be a centered modal type component.
+- `props.triggerProps` is for the open/close button.
+"
+} %}

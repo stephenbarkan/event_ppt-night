@@ -1,0 +1,46 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro copyToClipboard(props={}, attrs={}) %}
+
+<span
+    x-data="{
+        input: {% if props.copyResult %}'{{ props.copyResult }}'{% else %}$refs.{{ props.copyRef }}.innerText{% endif %},
+        copy () {
+            $clipboard(this.input)
+            $dispatch('notify', { content:'{{props.toastMessage}}', toasterId:'{% if props.toasterId %}{{ props.toasterId }}{% else %}siteToaster{% endif %}' })
+        }
+    }"
+    {{ loopAttrs(attrs) }}
+    class="inline-block {{ attrs.class }}">
+    {% if caller %}
+        {{ caller() | safe }}
+    {% else %}
+        {{ button(props, attrs | assign({"@click":"copy"})) }}</li>
+    {% endif %}
+</span>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set copyToClipboardMeta = {
+    args: '{{ copyToClipboard(
+    props={
+        copyResult: "" | copyRef: "",
+        label: "", {# any props for the Button component#}
+        toastMessage: "",
+        toasterId: ""
+    },
+    attrs={}
+) }}',
+description: "
+- Use `copyResult` or `copyRef`, not both. `copyRef` is the `x-ref` value of an element inside the caller() that you want to copy the `innerText` value of.
+- Use `props.trigger` to define the trigger element, or give an element inside the caller() the attribute `@click: 'copy'` to trigger the copy event.
+- Must have the `toaster` component somewhere on the page for this component to work.
+"
+} %}

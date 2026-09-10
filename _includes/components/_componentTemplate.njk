@@ -1,0 +1,45 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro _componentTemplate(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set _componentTemplateStyles = "" %}
+
+{# Defaults ------------------ #}
+
+{% set value = null if props.value == null else props.value %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-_componentTemplate
+    {{ loopAttrs(attrs) }}
+    class="{{ attrs.class }} {{ _componentTemplateStyles }}">
+    {# content #}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set _componentTemplateMeta = {
+    args: '{% call _componentTemplate(
+    props={
+        input: "",
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: "
+-
+-
+-
+"
+} %}

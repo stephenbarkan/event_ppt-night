@@ -1,0 +1,22 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/marquee.njk" import marquee, marqueeMeta %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "marquee",
+    meta: marqueeMeta
+}) %}
+    {% call marquee({
+        duration: "30s",
+        itemGap: "gap-sm",
+        mask: true,
+        pauseOnHover: true
+    }) %}
+        {% for item in ["Sites by Steph!", "Sites by Steph!", "Sites by Steph!", "Sites by Steph!"] %}
+            <li class="text-body-lg [text-box:normal]">{{ item }}</li>
+        {% endfor %}
+    {% endcall %}
+{% endcall %}

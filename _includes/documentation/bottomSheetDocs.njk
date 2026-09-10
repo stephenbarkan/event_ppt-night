@@ -1,0 +1,12 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/bottomSheet.njk" import bottomSheet, bottomSheetMeta %}
+{% from "components/container.njk" import container %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{{ componentDocumentation({
+    title: "bottomSheet",
+    meta: bottomSheetMeta
+}) }}

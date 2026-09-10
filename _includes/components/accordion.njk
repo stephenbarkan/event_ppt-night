@@ -1,0 +1,63 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/markdown.njk" import markdown %}
+{% from "components/icon.njk" import icon %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro accordion(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set showCaret = false %}
+{% set detailsStyles = "py-2xs border-transparent not-last:border-neutral-light border-b" %}
+{% set summaryStyles = "text-button-base min-h-tube-sm-y underline-offset-2 decoration-from-font gap-xs hover:underline" %}
+{% set contentStyles = "py-xs pb-sm text-body-sm" %}
+
+<style>
+    summary::-webkit-details-marker { display: none }
+</style>
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-accordion {{ loopAttrs() }} class="flex flex-col {{attrs.class}}">
+    {% for item in props.accordionItems %}
+            <details
+            {% if item.isOpen %}open{% endif %}
+            {{ loopAttrs(item.attrs) }}
+            class="w-full flex flex-col group {{ detailsStyles }} {{ item.attrs.class }}">
+            <summary class="flex items-center appearance-none cursor-pointer {{ summaryStyles }}">
+                {% if showCaret %}
+                    {{ icon(props={glyph: "arrow_right"} ,attrs={class:"group-open:hidden"}) }}
+                    {{ icon(props={glyph: "arrow_drop_down"} ,attrs={class:"hidden group-open:block"}) }}
+                {% endif %}
+                <h3 class="grow">{{ item.title }}</h3>
+                {% if not showCaret %}
+                    {{ icon(props={glyph: "add"} ,attrs={class:"group-open:hidden"}) }}
+                    {{ icon(props={glyph: "remove"} ,attrs={class:"hidden group-open:block"}) }}
+                {% endif %}
+            </summary>
+
+            {{ markdown({content: item.elaboration, transform: true },{class: contentStyles }) }}
+
+        </details>
+    {% endfor %}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set accordionMeta = {
+args: '{{ accordion(
+    props={
+        accordionItems: [{
+            title: "",
+            elaboration: "",
+            isOpen: false
+        }]
+    },
+    attrs={}
+) }}'
+} %}

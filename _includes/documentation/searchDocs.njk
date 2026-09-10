@@ -1,0 +1,40 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/search.njk" import search, searchMeta %}
+{% from "components/markdown.njk" import markdown %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "search",
+    meta: searchMeta
+}) %}
+    <div
+        x-data="{documentationSearch: ''}"
+        class="w-full grid grid-cols-subgrid grid-col-full items-center">
+
+            <form method='POST' name='search' :action='`/search?q=` + documentationSearch' class="w-full grid-col-content">
+                {{ search(
+                    props={
+                        name: "documentationSearch",
+                        fieldAttrs: {
+                            placeholder: "Search"
+                        }
+                    },
+                attrs={
+                    class:""
+                }) }}
+            </form>
+
+
+        {% call markdown(
+            props={transform: false, overrides:{preRadius:"0"} },
+            attrs={class:"relative grid-col-full -bottom-base-x -mx-px"}
+        ) %}
+        <pre>
+<code>output: <span x-show="!documentationSearch">""</span><span x-show="documentationSearch"><span x-text="JSON.stringify(documentationSearch)"></span></span>
+</code></pre>
+        {% endcall %}
+    </div>
+{% endcall %}

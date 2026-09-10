@@ -1,0 +1,117 @@
+@layer base {
+  :root {
+    --body-sm--font-size: var(--body-sm--font-size-min);
+    --body-base--font-size: var(--body-base--font-size-min);
+    --body-lg--font-size: var(--body-lg--font-size-min);
+    --heading-xs--font-size: var(--heading-xs--font-size-min);
+    --heading-sm--font-size: var(--heading-sm--font-size-min);
+    --heading-base--font-size: var(--heading-base--font-size-min);
+    --heading-lg--font-size: var(--heading-lg--font-size-min);
+    --heading-xl--font-size: var(--heading-xl--font-size-min);
+    --button-sm--font-size: var(--button-sm--font-size-min);
+    --button-base--font-size: var(--button-base--font-size-min);
+    --button-lg--font-size: var(--button-lg--font-size-min);
+
+    --body-sm--line-height: var(--body-sm--line-height-min);
+    --body-base--line-height: var(--body-base--line-height-min);
+    --body-lg--line-height: var(--body-lg--line-height-min);
+    --heading-xs--line-height: var(--heading-xs--line-height-min);
+    --heading-sm--line-height: var(--heading-sm--line-height-min);
+    --heading-base--line-height: var(--heading-base--line-height-min);
+    --heading-lg--line-height: var(--heading-lg--line-height-min);
+    --heading-xl--line-height: var(--heading-xl--line-height-min);
+    --button-sm--line-height: var(--button-sm--line-height-min);
+    --button-base--line-height: var(--button-base--line-height-min);
+    --button-lg--line-height: var(--button-lg--line-height-min);
+
+    @media screen and (min-width: 600px) {
+      --body-sm--font-size: calc(var(--body-sm--font-size-min) + (0.5 * (var(--body-sm--font-size-max) - var(--body-sm--font-size-min))));
+      --body-base--font-size: calc(var(--body-base--font-size-min) + (0.5 * (var(--body-base--font-size-max) - var(--body-base--font-size-min))));
+      --body-lg--font-size: calc(var(--body-lg--font-size-min) + (0.5 * (var(--body-lg--font-size-max) - var(--body-lg--font-size-min))));
+      --heading-xs--font-size: calc(var(--heading-xs--font-size-min) + (0.5 * (var(--heading-xs--font-size-max) - var(--heading-xs--font-size-min))));
+      --heading-sm--font-size: calc(var(--heading-sm--font-size-min) + (0.5 * (var(--heading-sm--font-size-max) - var(--heading-sm--font-size-min))));
+      --heading-base--font-size: calc(var(--heading-base--font-size-min) + (0.5 * (var(--heading-base--font-size-max) - var(--heading-base--font-size-min))));
+      --heading-lg--font-size: calc(var(--heading-lg--font-size-min) + (0.5 * (var(--heading-lg--font-size-max) - var(--heading-lg--font-size-min))));
+      --heading-xl--font-size: calc(var(--heading-xl--font-size-min) + (0.5 * (var(--heading-xl--font-size-max) - var(--heading-xl--font-size-min))));
+      --button-sm--font-size: calc(var(--button-sm--font-size-min) + (0.5 * (var(--button-sm--font-size-max) - var(--button-sm--font-size-min))));
+      --button-base--font-size: calc(var(--button-base--font-size-min) + (0.5 * (var(--button-base--font-size-max) - var(--button-base--font-size-min))));
+      --button-lg--font-size: calc(var(--button-lg--font-size-min) + (0.5 * (var(--button-lg--font-size-max) - var(--button-lg--font-size-min))));
+
+      --body-sm--line-height: calc(var(--body-sm--line-height-min) + (0.5 * (var(--body-sm--line-height-max) - var(--body-sm--line-height-min))));
+      --body-base--line-height: calc(var(--body-base--line-height-min) + (0.5 * (var(--body-base--line-height-max) - var(--body-base--line-height-min))));
+      --body-lg--line-height: calc(var(--body-lg--line-height-min) + (0.5 * (var(--body-lg--line-height-max) - var(--body-lg--line-height-min))));
+      --heading-xs--line-height: calc(var(--heading-xs--line-height-min) + (0.5 * (var(--heading-xs--line-height-max) - var(--heading-xs--line-height-min))));
+      --heading-sm--line-height: calc(var(--heading-sm--line-height-min) + (0.5 * (var(--heading-sm--line-height-max) - var(--heading-sm--line-height-min))));
+      --heading-base--line-height: calc(var(--heading-base--line-height-min) + (0.5 * (var(--heading-base--line-height-max) - var(--heading-base--line-height-min))));
+      --heading-lg--line-height: calc(var(--heading-lg--line-height-min) + (0.5 * (var(--heading-lg--line-height-max) - var(--heading-lg--line-height-min))));
+      --heading-xl--line-height: calc(var(--heading-xl--line-height-min) + (0.5 * (var(--heading-xl--line-height-max) - var(--heading-xl--line-height-min))));
+      --button-sm--line-height: calc(var(--button-sm--line-height-min) + (0.5 * (var(--button-sm--line-height-max) - var(--button-sm--line-height-min))));
+      --button-base--line-height: calc(var(--button-base--line-height-min) + (0.5 * (var(--button-base--line-height-max) - var(--button-base--line-height-min))));
+      --button-lg--line-height: calc(var(--button-lg--line-height-min) + (0.5 * (var(--button-lg--line-height-max) - var(--button-lg--line-height-min))));
+    }
+
+    @media screen and (min-width: 850px) {
+      --body-sm--font-size: var(--body-sm--font-size-max);
+      --body-base--font-size: var(--body-base--font-size-max);
+      --body-lg--font-size: var(--body-lg--font-size-max);
+      --heading-xs--font-size: var(--heading-xs--font-size-max);
+      --heading-sm--font-size: var(--heading-sm--font-size-max);
+      --heading-base--font-size: var(--heading-base--font-size-max);
+      --heading-lg--font-size: var(--heading-lg--font-size-max);
+      --heading-xl--font-size: var(--heading-xl--font-size-max);
+      --button-sm--font-size: var(--button-sm--font-size-max);
+      --button-base--font-size: var(--button-base--font-size-max);
+      --button-lg--font-size: var(--button-lg--font-size-max);
+
+      --body-sm--line-height: var(--body-sm--line-height-max);
+      --body-base--line-height: var(--body-base--line-height-max);
+      --body-lg--line-height: var(--body-lg--line-height-max);
+      --heading-xs--line-height: var(--heading-xs--line-height-max);
+      --heading-sm--line-height: var(--heading-sm--line-height-max);
+      --heading-base--line-height: var(--heading-base--line-height-max);
+      --heading-lg--line-height: var(--heading-lg--line-height-max);
+      --heading-xl--line-height: var(--heading-xl--line-height-max);
+      --button-sm--line-height: var(--button-sm--line-height-max);
+      --button-base--line-height: var(--button-base--line-height-max);
+      --button-lg--line-height: var(--button-lg--line-height-max);
+    }
+  }
+
+  [class*="text-body-"] {
+    --icon-scale: var(--body-icon--scale);
+    --icon--font-weight: var(--body-icon--font-weight);
+    text-wrap: pretty;
+  }
+
+  [class*="text-heading-"] {
+    font-family: var(--font-display);
+    font-weight: var(--heading--font-weight);
+    --icon--font-weight: var(--heading-icon--font-weight);
+    --icon-scale: var(--heading-icon--scale);
+    text-wrap: balance;
+  }
+
+  [class*="text-button-"] {
+    --icon-scale: var(--button-icon--scale);
+    --icon--font-weight: var(--button-icon--font-weight);
+  }
+
+  .text-icon {
+    transform-origin: top;
+    font-family: var(--font-icon);
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    text-decoration: none !important;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+      "FILL" 0,
+      "wght" var(--icon--font-weight),
+      "GRAD" 0;
+  }
+}

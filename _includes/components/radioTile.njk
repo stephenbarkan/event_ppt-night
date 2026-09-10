@@ -1,0 +1,85 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldsetOptionStyles, fieldsetInputStyles, fieldsetOptionLabelStyles, radioTileGroupStyles %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro radioTile(props={}, attrs={}) %}
+
+    <fieldset
+        name="{{ props.name }}"
+        class="{{ attrs.class }}"
+        {{ loopAttrs(attrs) }}
+    >
+        <div class="{{ directionStyles["column"] }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "legend", fieldProps:props}) }}{% endif %}
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+
+            <div
+                @keydown.right.prevent.stop="$focus.wrap().next()"
+                @keydown.left.prevent.stop="$focus.wrap().prev()"
+                @keydown.home.prevent.stop="$focus.first()"
+                @keydown.page-up.prevent.stop="$focus.first()"
+                @keydown.end.prevent.stop="$focus.last()"
+                @keydown.page-down.prevent.stop="$focus.last()"
+                class="grid grid-cols-{{props.options.length}} {{ radioTileGroupStyles }}">
+                {% for option in props.options %}
+                    <div x-data="{ id: $id('{{ option.value }}')}" class="flex h-full">
+                        <input
+                            :checked="{{ props.name }}.index === {{ loop.index }}"
+                            :id="id"
+                            type="radio"
+                            name="{{ props.name }}"
+                            value="{{ option.value }}"
+                            {{ loopAttrs(props.fieldAttrs) }}
+                            class="invisible size-0"/>
+                        <label class="{{ fieldsetOptionLabelStyles }} flex items-center w-full h-full" :for="id">
+                            {% set isTrueCondition = props.name + ".index === " + loop.index %}
+                            {% set isTabableCondition = props.name + ".index == null ||" + isTrueCondition %}
+                            {{ button(
+                                props={
+                                    label: option.label,
+                                    type: "button",
+                                    size: "lg",
+                                    toggleValue: isTrueCondition
+                                },
+                                attrs={
+                                    type:"button",
+                                    class:"w-full h-full",
+                                    ":tabindex": isTabableCondition + ' ? 0 : -1',
+                                    "@click": props.name + " = {index: " + loop.index + ", value: '" + option.value + "'}",
+                                    "@focus": props.name + " = {index: " + loop.index + ", value: '" + option.value + "'}"
+                                }
+                            ) }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </fieldset>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set radioTileMeta = {
+    args: '{{ radio(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        options: [{label: "", value: ""}],
+        fieldAttrs: {}
+    },
+    attrs={}
+) }}',
+description: "
+- Probably only use if you have two options. Otherwise, maybe use the Radio component instead.
+- If you want access to the selected radio, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+    - `{{ props.name }}.index` will give you the index of the selected radio
+    - `{{ props.name }}.value` will give you the value of the selected radio (what will show up in the form submission.)
+"
+} %}

@@ -1,0 +1,76 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldPadding %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro select(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set fieldPadding = "py-3xs px-tube-base-x gap-tube-base-x" %}
+
+{% set newArr = [] %}
+{% for option in props.options %}
+    {% set newArr = (newArr.push(option.value), newArr) %}
+{% endfor %}
+
+<style>
+    select::picker-icon {
+        content: 'keyboard_arrow_down';
+        font-family: var(--font-icon);
+        font-size: calc(1em * var(--icon-scale));
+        font-weight: var(--icon--font-weight);
+        margin-inline: -.25em;
+    }
+</style>
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div
+    {{ loopAttrs(attrs) }}
+    class="{% if props.direction %}{{ directionStyles[props.direction] }}{% else %}{{ directionStyles['column'] }}{% endif %} {{ attrs.class }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "label", fieldProps:props}) }}{% endif %}
+
+    <select
+        name="{{ props.name }}"
+        id="{{ props.name }}"
+        {{ loopAttrs(props.fieldAttrs) }}
+        class="[appearance:base-select] {{ fieldPadding }} {{ fieldStyles }} {{ props.fieldAttrs.class }}"
+        x-on:change="{{ props.name }} = {index: {{ newArr | dump }}.indexOf($event.target.value) + 1, value: $event.target.value}"
+    >
+        {% if props.fieldAttrs.placeholder %}<option value="" selected disabled>{{ props.fieldAttrs.placeholder}}</option>{% endif %}
+        {% for option in props.options %}
+            <option
+            value="{{ option.value }}">{{ option.label }}</option>
+        {% endfor %}
+    </select>
+
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set selectMeta = {
+    args: '{{ select(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        options: [{label:"", value: ""}],
+        direction: "column | row",
+        fieldAttrs: {
+            placeholder: "",
+            required: boolean
+        }
+    },
+    attrs={}
+) }}',
+description: "
+- If you want access to the selected option, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+"
+} %}

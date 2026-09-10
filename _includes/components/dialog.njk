@@ -1,0 +1,149 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/container.njk" import container %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro dialog(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set panelStyles = "bg-surface border-neutral-light" %}
+{% set backdropStyles = "bg-black opacity-50 transition-opacity" %}
+{% set transitionEnter = "duration-200 ease-in will-change-transform" %}
+{% set transitionLeave = "duration-200 ease-out will-change-transform" %}
+
+{% if props.alignment === "center" %}
+
+    {% set dialogJustificationStyles = "flex-col justify-center items-center px-sm" %}
+    {% set panelPositionStyles = "border w-full max-w-content" %}
+    {% set transitionStyles = "opacity-0" %}
+
+{% elseif props.alignment === "top" %}
+
+    {% set dialogJustificationStyles = "flex-col justify-start" %}
+    {% set panelPositionStyles = "border-b max-h-[80dvh]" %}
+    {% set transitionStyles = "-translate-y-full" %}
+
+{% elseif props.alignment === "bottom" %}
+
+    {% set dialogJustificationStyles = "flex-col-reverse" %}
+    {% set panelPositionStyles = "border-t rounded-t-base max-h-[80dvh]" %}
+    {% set transitionStyles = "translate-y-full" %}
+
+{% elseif props.alignment === "right" %}
+
+    {% set dialogJustificationStyles = "justify-end" %}
+    {% set panelPositionStyles = "grow border-l max-w-[80%]" %}
+    {% set transitionStyles = "translate-x-full" %}
+
+{% elseif props.alignment === "left" %}
+
+    {% set dialogJustificationStyles = "justify-start" %}
+    {% set panelPositionStyles = "grow border-r max-w-[80%]" %}
+    {% set transitionStyles = "-translate-x-full" %}
+
+{% endif %}
+
+{# Other ------------------ #}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-dialog
+    {{ loopAttrs(attrs) }}
+    x-data="{
+        dialogOpen: false,
+        openDialog() {
+            this.dialogOpen = true
+            $dispatch('dialog-state', this.dialogOpen)
+        },
+        closeDialog() {
+            this.dialogOpen = false
+            $dispatch('dialog-state', this.dialogOpen)
+        },
+        toggleDialog() {
+            this.dialogOpen ? this.closeDialog() : this.openDialog()
+        }
+    }"
+    x-on:resize.window.debounce="closeDialog"
+    class="flex {{ attrs.class }}">
+    {{ button(props.triggerProps | assign({toggleValue: "dialogOpen"}), {class:"grow", "@click": "toggleDialog", "x-ref":"trigger"}) }}
+
+    <dialog data-dialog-teleport
+        x-show="dialogOpen"
+        closeby="any"
+        x-htmldialog="toggleDialog"
+        aria-label="{{ props.ariaLabel }}"
+        class="w-full bg-transparent max-w-unset max-h-unset h-dvh overflow-hidden backdrop:bg-transparent {{ props.teleportedStyles }}">
+
+        {# Backdrop ------------------ #}
+        <div data-backdrop
+            x-show="dialogOpen"
+            x-transition:enter="{{ transitionEnter }}"
+            x-transition:enter-start="opacity-0!"
+            x-transition:leave="{{ transitionLeave }}"
+            x-transition:leave-end="opacity-0!"
+            class="absolute inset-0 z-(--z-lowered) {{ backdropStyles }}">
+        </div>
+
+        {# Panel ------------------ #}
+        <div data-panel
+            x-ref="panelWrapper"
+            @click="toggleDialog"
+            class="relative h-full w-full flex {{ dialogJustificationStyles }}">
+
+            {# Actual panel #}
+            <div
+                x-show="dialogOpen"
+                x-transition:enter="{{ transitionEnter }}"
+                x-transition:enter-start="{{ transitionStyles }}"
+                x-transition:enter-end="translate-0"
+                x-transition:leave="{{ transitionLeave }}"
+                x-transition:leave-start="translate-0"
+                x-transition:leave-end="{{ transitionStyles }}"
+                x-trap.noscroll.inert="dialogOpen"
+                tabindex="0"
+                @click.stop = "$event.target.tagName.toLowerCase() === 'a' && toggleDialog"
+                class="@container flex flex-col relative  {{ panelStyles }} {{ panelPositionStyles }}">
+
+                {% if caller %}
+                    {{ caller() | safe }}
+                {% endif %}
+            </div>
+        </div>
+    </dialog>
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set dialogMeta = {
+    args: '{% call dialog(
+    props={
+        alignment: "top | bottom | left | right",
+        ariaLabel: "",
+        teleportedStyles: "",
+        triggerProps: {
+            toggleValue: "",
+            label: {off: "", on: ""},
+            icon: {off: "", on: ""},
+            tooltip: "",
+            type: "button | link",
+            size: "base | lg | sm | inherit",
+            variant: "",
+            iconPosition: "start | end"
+        }
+    %}
+    {% endcall %},
+    attrs={}
+) }}',
+description: "
+- `props.alignment` defines which direction the dialog comes from.
+- `props.triggerProps` is for the open/close button
+"
+} %}

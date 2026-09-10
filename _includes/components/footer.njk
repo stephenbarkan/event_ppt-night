@@ -1,0 +1,22 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "assets.njk" import logo %}
+{% from "components/button.njk" import button %}
+{% from "components/dropdown.njk" import dropdown %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set footerStyles = "gap-sm py-sm" %}
+{% set footerButtonStyles = {
+    size:"sm",
+    type:"link",
+    variant: "neutral"
+} %}
+
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call container({size:"base", type: "flex", alignment: "end"},{class:"py-sm justify-center"}) %}
+    {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} })}}
+    {# {{ cms.footer.ad }} #}
+{% endcall %}

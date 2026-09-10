@@ -1,0 +1,88 @@
+{
+  "seoTitle": "Get a quote for your custom, hand-coded website",
+  "seoDescritpion": "Sites by Steph are designed, built, and managed for you—by Steph!",
+  "title": "Contact",
+  "elaboration": "Fill out the form below or send an email to [steph@sitesbysteph.com](mailto:steph@sitesbysteph.com).",
+  "formFields": [
+    {
+      "macro": "radioTile",
+      "props": {
+        "name": "confirm",
+        "label": "Can you make it?",
+        "description": "Description",
+        "options": [
+          { "label": "No", "value": "false" },
+          { "label": "Yes", "value": "true" }
+        ],
+        "fieldAttrs": {
+          "required": true
+        }
+      }
+    },
+    {
+      "macro": "input",
+      "showCondition": "confirm.value == 'true'",
+      "props": {
+        "name": "name",
+        "label": "Your name",
+        "description": "",
+        "fieldAttrs": {
+          "type": "text",
+          "required": true,
+          "autocomplete": "off"
+        }
+      }
+    },
+    {
+      "macro": "input",
+      "showCondition": "confirm.value == 'true'",
+      "props": {
+        "name": "contactMethod",
+        "label": "A contact method",
+        "description": "",
+        "fieldAttrs": {
+          "type": "text",
+          "required": true,
+          "autocomplete": "off",
+          "placeholder": "Phone number or email address"
+        }
+      }
+    },
+    {
+      "macro": "textarea",
+      "showCondition": "confirm.value == 'true'",
+      "props": {
+        "name": "message",
+        "label": "Your message",
+        "description": "",
+        "fieldAttrs": {
+          "required": true,
+          "placeholder": "Tell me a little about your website needs here.",
+          "autocomplete": "off",
+          "rows": "5"
+        }
+      }
+    },
+    {
+      "macro": "input",
+      "showCondition": "confirm.value == 'true'",
+      "props": {
+        "name": "currentWebsite",
+        "label": "Optional: Link to your current website",
+        "description": "",
+        "fieldAttrs": {
+          "type": "url",
+          "placeholder": "https://example.com",
+          "autocomplete": "off"
+        }
+      }
+    },
+    {
+      "macro": "submit",
+      "showCondition": "confirm.value",
+      "props": {
+        "label": "Submit form"
+      }
+    }
+  ]
+}

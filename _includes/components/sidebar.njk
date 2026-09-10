@@ -1,0 +1,39 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro sidebar(props={}, attrs={}) %}
+
+{# Values ----------- #}
+
+{% set sidebarStyles = "" %}
+
+{# ------------------ #}
+
+<aside
+    data-sidebar
+    {{ loopAttrs(attrs) }}
+    class="sticky top-0 flex-col items-start overflow-y-auto max-h-dvh h-fit {{ sidebarStyles }} {{ attrs.class }}">
+    {{ caller() | safe }}
+</aside>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set sidebarMeta = {
+    args: '{% call sidebar(
+    props={
+        input: "",
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: "
+-
+-
+-
+"
+} %}

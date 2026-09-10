@@ -1,0 +1,66 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro marquee(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set marqueeStyles = "overflow-hidden select-none" %}
+{% set maskStyles = "mask-x-from-80% mask-x-to-100%" %}
+
+{# Other ------------------ #}
+
+{% set duration =  "45s" if not props.duration else props.duration %}
+{% set itemGap =  "gap-sm" if not props.itemGap else props.itemGap %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div data-marquee
+    {{ loopAttrs(attrs) }}
+    style="--gap: var(--spacing-{{ props.itemGap | replace("gap-", "") }})" {# used to calculate the marquee animation #}
+    class="flex max-w-cqi
+        {{ props.itemGap }}
+        {{ attrs.class }}
+        {{ marqueeStyles }}
+        {{ maskStyles if props.mask }}
+        {% if props.pauseOnHover %}hover:*:[animation-play-state:paused]{% endif %}
+        ">
+    <ul
+        class="shrink-0 flex {{ props.itemGap }} justify-around min-w-full animate-marquee"
+        style="--animate-duration: {{ duration }}">
+        {{ caller() | safe }}
+    </ul>
+    <ul
+        aria-hidden="true"
+        class="shrink-0 flex {{ props.itemGap }} justify-around min-w-full animate-marquee"
+        style="--animate-duration: {{ duration }}">
+        {{ caller() | safe }}
+    </ul>
+</div>
+{% endmacro %}
+
+
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set marqueeMeta = {
+    args: '{% call marquee(
+    props={
+        duration: "30s",
+        itemGap: "gap-sm",
+        mask: boolean,
+        pauseOnHover: boolean
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: "
+- Put elements you want repeated inside the `{{ caller() }}`, semantically as `<li>`s.
+"
+} %}

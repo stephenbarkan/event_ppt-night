@@ -1,0 +1,59 @@
+{# Description -------------------------------------------------------------------------------------------------------------------------- #}
+{# This layout file sets up the sidebar layout and left-aligned title #}
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% extends "layouts/page.njk" %}
+
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/button.njk" import button %}
+{% from "components/markdown.njk" import markdown %}
+{% from "components/container.njk" import container %}
+{% from "components/sidebar.njk" import sidebar %}
+{% from "components/textLockup.njk" import textLockup %}
+{% from "components/bottomSheet.njk" import bottomSheet %}
+{% from "components/toTopFab.njk" import toTopFab %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# {% set anchoredContent = content | attachId | attachAnchor %} #}
+{% set mainStyles = "max-lg:pb-tube-lg-y" %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% block pageTitle %}
+    {% call container({},{class:""}) %}
+        {{ textLockup({
+            titleTag: "h1",
+            size: "lg",
+            textAlignment: "left",
+            title: title,
+            elaboration: elaboration
+        }) }}
+    {% endcall %}
+{% endblock pageTitle %}
+
+{% block pageContent %}
+    {% call section({},{class:"grow"}) %}
+        {% call container({size:"base", type:"sidebar"}, {class:"border-t border-neutral-light"}) %}
+
+            {% call sidebar({},{class:"border-r border-neutral-light max-lg:hidden pr-sm"}) %}
+                {% block tableOfContents %}{% endblock %}
+            {% endcall %}
+
+            <div class="overflow-hidden py-lg lg:pl-sm">
+                {% block documentContent %}
+                    {# {% call markdown({transform: false},{class:"w-full max-w-content"}) %}
+                        {{ anchoredContent | safe }}
+                    {% endcall %} #}
+                {% endblock documentContent %}
+            </div>
+
+        {% endcall %}
+    {% endcall %}
+
+    {{ toTopFab() }}
+{% endblock pageContent %}
+
+{% block bottomSheet %}
+{% endblock bottomSheet %}

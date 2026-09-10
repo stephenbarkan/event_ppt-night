@@ -1,0 +1,112 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro figure(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set figureStyles = "gap-xs" %}
+{% set figureImageStyles = "bg-surface border border-neutral-light" %}
+{% set figureCaptionStyles = "text-center text-body-sm" %}
+
+{# Other ------------------ #}
+
+{% set mobileWidth %}{% if props.widths.mobile and props.widths %}{{ props.widths.mobile }}px{% else %}800px{% endif %}{% endset %}
+{% set tabletWidth %}{% if props.widths.tablet and props.widths %}{{ props.widths.tablet }}px{% else %}1600px{% endif %}{% endset %}
+{% set desktopWidth %}{% if props.widths.desktop and props.widths %}{{ props.widths.desktop }}px{% else %}2000px{% endif %}{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<figure data-figure
+    {{ loopAttrs(attrs) }}
+    class="flex flex-col {{ attrs.class }} {{ figureStyles }}">
+    <div
+        class="grow overflow-hidden
+            {{ props.imageStyles if props.imageStyles else figureImageStyles }}
+             {% if props.aspect %}
+                {{ props.aspect }}
+             {% else %}
+                {% if props.iframe %}aspect-video{% endif %}
+                {% if props.image %}aspect-auto{% endif %}
+            {% endif %}
+        ">
+
+        {% if not props.iframe %}
+            <img
+                {% if props.lazy == false %}
+                    fetchpriority="high"
+                {% else %}
+                    loading="lazy"
+                {% endif %}
+                {% set comma = joiner() %}
+                eleventy:widths="
+                    {% if props.widths.mobile %}
+                        {{ props.widths.mobile }}px,
+                    {% endif %}{% if props.widths.tablet %}
+                        {{ props.widths.tablet }}px,
+                    {% endif %}{% if props.widths.desktop %}
+                        {{ props.widths.desktop }}px
+                    {% endif %}"
+                eleventy:formats="avif,webp,jpeg"
+                sizes="
+                    {%- if props.widths.mobile -%}
+                        (max-width: 600px) {{ props.widths.mobile }},
+                    {%- endif -%}{% if props.widths.tablet -%}
+                        (max-width: 1040px) {{ props.widths.tablet }},
+                    {%- endif -%}{% if props.widths.desktop -%}
+                        {{ props.widths.desktop }}
+                    {%- endif -%}"
+                    src="{{ props.image }}"
+                    alt="{{ props.alt }}"
+                class="w-full h-full object-cover {{ props.focus }}">
+        {% endif %}
+
+        {% if props.iframe %}
+            <iframe
+                loading="lazy"
+                class="object-cover w-full h-full aspect-video"
+                src="{{ props.iframe }}"
+                title="{{ props.caption }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+        {% endif %}
+
+    </div>
+    {% if props.caption %}<figcaption class="{{ figureCaptionStyles }}">{{ props.caption }}</figcaption>{% endif %}
+</figure>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set figureMeta = {
+    args: '{{ figure(
+    props={
+        image: "/assets/uploads/" | iframe: "https://www.youtube.com/embed/",
+        imageStyles: "",
+        alt: "",
+        lazy: boolean,
+        caption: "",
+        focus: "object-",
+        aspect: "aspect-"
+    },
+    attrs={}
+) }}',
+description: "
+- `props.lazy` must be set to false if you want the loading to not be lazy.
+- `props.imageStyles` is optional if you want to have custom styles on the image itself.
+- The component is designed to be flexible so the image is set to `object-cover`.
+- `props.focus` designates the area to prioritize keeping in view as the image resizes. Default is center.
+- `props.aspect` designates the preferred aspect ratio for the image. Default is auto.
+- `props.aspect` and `props.focus` take the [TailwindCSS](https://tailwindcss.com/docs/aspect-ratio) class name for that property.
+"
+} %}

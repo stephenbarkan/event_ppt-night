@@ -1,0 +1,31 @@
+---
+pagination:
+  data: collections.postsByYear
+  size: 1
+  alias: years
+permalink: /year/{{ years[0] | slug }}/
+---
+
+{% extends "layouts/document.njk" %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set data = { title: "Published: " + years[0] } %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% block tableOfContents %}{% include "snippets/archiveSidebar.njk" %}{% endblock tableOfContents %}
+
+{% block documentContent %}
+    <ul class="flex flex-col gap-xs items-start list-inside">
+        {% for year, posts in collections.postsByYear %}
+            {% if year === years[0] %}
+                {% for post in posts %}
+                    <li class="list-disc">
+                        {{ button({label: post.data.title, type: "link"},{href:post.url}) }}
+                    </li>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock documentContent %}

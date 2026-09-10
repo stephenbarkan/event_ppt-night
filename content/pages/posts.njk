@@ -1,0 +1,62 @@
+{% extends "layouts/document.njk" %}
+
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/articleCard.njk" import articleCard %}
+
+{# Content Source -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set data = cms.postsPage %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{# {% block pageTitle %}{% endblock pageTitle %} #}
+
+{% block tableOfContents %}{% include "snippets/archiveSidebar.njk" %}{% endblock tableOfContents %}
+
+{% block documentContent %}
+    <ul class="grid gap-2xs" style="grid-template-columns: repeat( auto-fill, minmax(250px, 1fr) );">
+        {% for post in collections.post %}
+            {{ articleCard({
+                href: post.url,
+                title: post.data.title,
+                eyebrow: post.data.tags | tagsList | join(", "),
+                figure: {
+                    image: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-1.webp',
+                    alt: 'Vibrant abstract painting with swirling blue and light pink hues on a canvas.',
+                    aspect: "aspect-5/4"
+                }
+            }) }}
+        {% endfor %}
+    </ul>
+{% endblock documentContent %}
+
+
+{# Bottomsheet -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% block bottomSheet %}
+    {% call bottomSheet(
+        props={
+           triggerProps: {
+                label:{off: "Open search and filters", on: "Close search and filters"},
+                glyph: {off: "keyboard_arrow_up", on: "keyboard_arrow_down"},
+                size:"base",
+                type:"link",
+                variant: "neutral"
+            }
+        },
+        attrs={class:"lg:hidden"}
+    ) %}
+        {% call container({},{class:"py-sm gap-2xs"}) %}
+            {% set toc %}{% include "snippets/archiveSidebar.njk" %}{% endset %}
+            {{ markdown({
+                content: toc,
+                overrides: {fontSize: "text-body-base", scale:".75"}
+            },{
+                class:"w-full"
+            })}}
+        {% endcall %}
+    {% endcall %}
+{% endblock %}

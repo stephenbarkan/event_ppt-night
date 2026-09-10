@@ -1,0 +1,7 @@
+
+User-agent: *
+Allow: /
+
+Host: localhost:8080
+
+Sitemap: localhost:8080/sitemap.xml

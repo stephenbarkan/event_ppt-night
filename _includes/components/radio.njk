@@ -1,0 +1,58 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_fieldParts.njk" import fieldLabel, fieldDescription, directionStyles, fieldStyles, fieldsetOptionStyles, fieldsetInputStyles, fieldsetOptionLabelStyles, fieldsetGroupStyles %}
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro radio(props={}, attrs={}) %}
+
+    <fieldset
+        name="{{ props.name }}"
+        class="{{ attrs.class }}"
+        {{ loopAttrs(attrs) }}
+    >
+        <div class="{{ directionStyles["column"] }}">
+
+    {% if props.label %}{{ fieldLabel({tag: "legend", fieldProps:props}) }}{% endif %}
+    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+            <div class="flex flex-col {{ fieldsetGroupStyles }}">
+                {% for option in props.options %}
+                    <div x-data="{ id: $id('{{ option.value }}')}" class="flex {{ fieldsetOptionStyles }}">
+                        <input
+                            :checked="{{ props.name }}.index === {{ loop.index }}"
+                            x-on:change="{{ props.name }} = {index: {{ loop.index }}, value: '{{ option.value }}'}"
+                            :id="id"
+                            type="radio"
+                            name="{{ props.name }}"
+                            value="{{ option.value }}"
+                            {{ loopAttrs(props.fieldAttrs) }}
+                            class="{{ fieldsetInputStyles }} shrink-0"/>
+                        <label class="{{ fieldsetOptionLabelStyles }} flex items-center" :for="id">{{ option.label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </fieldset>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set radioMeta = {
+    args: '{{ radio(
+    props={
+        name: "",
+        label: "",
+        description: "",
+        options: [{label: "", value: ""}],
+        fieldAttrs: {}
+    },
+    attrs={}
+) }}',
+description: "
+- If you want access to the selected radio, define a `x-data` value in a parent element with the key as the `props.name` of this component.
+    - `{{ props.name }}.index` will give you the index of the selected radio
+    - `{{ props.name }}.value` will give you the value of the selected radio (what will show up in the form submission.)
+"
+} %}

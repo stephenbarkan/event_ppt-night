@@ -1,0 +1,34 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro divider(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set dividerStyles = "border-neutral-light" %}
+
+{# Other ------------------ #}
+
+{% set directionStyles %}{% if props.direction === "vertical" %}border-l{% else %}border-t w-full{% endif %}{% endset %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<div {{ loopAttrs(attrs) }} class="{{ attrs.class }} {{ dividerStyles }} {{ directionStyles }}"></div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set dividerMeta = {
+    args: '{{ divider(props={direction: ""}, attrs={}) }}',
+description: "
+- Use as a visual divider.
+- Can be vertical or horizontal.
+- When vertical, most likely you need to have `align-items: stretch` applied to a flex container, or `height: 100%` used on a grid container.
+"
+} %}

@@ -1,0 +1,41 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/select.njk" import select, selectMeta %}
+{% from "components/markdown.njk" import markdown %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "select",
+    meta: selectMeta
+}) %}
+    <div
+        x-data="{documentationSelect: ''}"
+        class="w-full grid grid-cols-subgrid grid-col-full items-center">
+        {{ select(
+            {
+            "name": "documentationSelect",
+            "label": "Select",
+            "options": [
+                {label: 'Option 1', value: 'You selected option 1!'},
+                {label: 'Option 2', value: 'You selected option 2!'},
+                {label: 'Option 3', value: 'You selected option 3!'}
+            ],
+            fieldAttrs: {
+                "required": true,
+                "placeholder": "Placeholder"
+            },
+            "description": "This area describes the field above!"
+            }, {class:"w-full grid-col-content"})
+        }}
+        {% call markdown(
+            props={transform: false, overrides:{preRadius:"0"} },
+            attrs={class:"relative grid-col-full -bottom-base-x -mx-px"}
+            ) %}
+            <pre>
+<code>output: <span x-show="!documentationSelect">{}</span><span x-show="documentationSelect"><span x-text="JSON.stringify(documentationSelect)"></span></span>
+</code></pre>
+        {% endcall %}
+    </div>
+{% endcall %}

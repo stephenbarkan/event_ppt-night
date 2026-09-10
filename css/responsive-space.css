@@ -1,0 +1,32 @@
+:root {
+  --space-3xs: var(--space-3xs-min);
+  --space-2xs: var(--space-2xs-min);
+  --space-xs: var(--space-xs-min);
+  --space-sm: var(--space-sm-min);
+  --space-base-x: var(--space-base-x-min);
+  --space-base-y: var(--space-base-y-min);
+  --space-lg: var(--space-lg-min);
+  --space-xl: var(--space-xl-min);
+
+  @media screen and (min-width: 600px) {
+    --space-3xs: calc(var(--space-3xs-min) + (0.5 * (var(--space-3xs-max) - var(--space-3xs-min))));
+    --space-2xs: calc(var(--space-2xs-min) + (0.5 * (var(--space-2xs-max) - var(--space-2xs-min))));
+    --space-xs: calc(var(--space-xs-min) + (0.5 * (var(--space-xs-max) - var(--space-xs-min))));
+    --space-sm: calc(var(--space-sm-min) + (0.5 * (var(--space-sm-max) - var(--space-sm-min))));
+    --space-base-x: calc(var(--space-base-x-min) + (0.5 * (var(--space-base-x-max) - var(--space-base-x-min))));
+    --space-base-y: calc(var(--space-base-y-min) + (0.5 * (var(--space-base-y-max) - var(--space-base-y-min))));
+    --space-lg: calc(var(--space-lg-min) + (0.5 * (var(--space-lg-max) - var(--space-lg-min))));
+    --space-xl: calc(var(--space-xl-min) + (0.5 * (var(--space-xl-max) - var(--space-xl-min))));
+  }
+
+  @media screen and (min-width: 850px) {
+    --space-3xs: var(--space-3xs-max);
+    --space-2xs: var(--space-2xs-max);
+    --space-xs: var(--space-xs-max);
+    --space-sm: var(--space-sm-max);
+    --space-base-x: var(--space-base-x-max);
+    --space-base-y: var(--space-base-y-max);
+    --space-lg: var(--space-lg-max);
+    --space-xl: var(--space-xl-max);
+  }
+}

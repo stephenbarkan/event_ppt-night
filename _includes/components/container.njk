@@ -1,0 +1,72 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro container(props={}, attrs={})%}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set themeStyles = "" %}
+
+{% set sizeStyles =
+    {
+        "content": "w-[var(--container-content)] max-w-full",
+        "sm": "w-[var(--container-sm)] max-w-full",
+        "base": "w-[var(--container-base)] max-w-full",
+        "full": "w-full grid-col-full grid-cols-subgrid"
+    }
+ %}
+
+{% set typeStyles =
+    {
+        "flex": "flex",
+        "cols-1": "grid",
+        "cols-2": "grid xl:grid-cols-2 gap-xl",
+        "sidebar": "grid lg:grid-cols-[3fr_8fr]"
+    }
+ %}
+
+{# Default Props -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set size = "base" if props.size == null else props.size %}
+{% set type = "cols-1" if props.type == null else props.type %}
+{% set alignment = "center" if props.alignment == null else props.alignment %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+    <div
+        data-container
+        {{ loopAttrs(attrs) }}
+        class="
+
+            {% if size %}{{sizeStyles[size]}}{% else %}{{ sizeStyles.base }}{% endif %}
+            {% if type %}{{typeStyles[type]}}{% else %}{{ typeStyles["cols-1"] }}{% endif %}
+            {% if alignment %}justify-self-{{ alignment }}{% else %}justify-self-center{% endif %}
+            {{ themeStyles }}
+            {{ attrs.class }}
+        ">
+        {{ caller() | safe }}
+    </div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set containerMeta = {
+    args: '{% call container(
+    props={
+        size: "base | sm | content",
+        type: "flex | cols-1 | cols-2 | sidebar",
+        alignment: "center | start | end"
+    },
+    attrs={class:""}
+) %}
+{% endcall %}',
+description: "
+- Wrapper for most page content sections.
+- `props.size` to set max-width
+- `props.type` to define columns or sidebar layouts.
+"
+} %}

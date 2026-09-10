@@ -1,0 +1,81 @@
+{# Imports ----------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/section.njk" import section %}
+{% from "components/container.njk" import container %}
+{% from "components/announcementBanner.njk" import announcementBanner with context %}
+{% from "components/toaster.njk" import toaster %}
+{% from "components/button.njk" import button %}
+{% from "components/textLockup.njk" import textLockup %}
+{% from "components/divider.njk" import divider %}
+{% from "components/markdown.njk" import markdown %}
+{% from "components/navbar.njk" import navbar with context %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme Values ------------------ #}
+
+{% set htmlStyles = "bg-surface font-body text-neutral antialiased scroll-p-lg" %}
+{% set bodyStyles = "text-body-base flex flex-col min-h-dvh w-screen items-center" %}
+{% set footerStyles = "border-t border-neutral-light" %}
+
+{# Other ------------------ #}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<!DOCTYPE html>
+<html
+    x-data="{
+        hasScrolled: false,
+        setHasScrolled() {
+            if (window.scrollY > 99) {
+                this.hasScrolled = true
+            } else {
+                this.hasScrolled = false
+            }
+        }
+    }"
+    @scroll.window="setHasScrolled()"
+    lang="en"
+    class="relative {{ htmlStyles }} {% if smoothScroll !== false %}scroll-smooth{% endif %}">
+
+    <head>
+        {% include "snippets/htmlHead.njk" %}
+    </head>
+
+    <body class="{{ bodyStyles }}">
+
+        {# Skip to content link #}
+        <a class="absolute top-0 left-0 opacity-0 z-[-1111111]" href="#main" aria-label="skip to main content">Click to skip to main content</a>
+
+        {% if global.announcementBannerContent %}
+            {{ announcementBanner({content: global.announcementBannerContent }) }}
+        {% endif %}
+
+
+        {{ toaster({id: "siteToaster"}) }}
+
+        {# {% block navbar %}
+            {{ navbar({sticky: true}) }}
+        {% endblock navbar %} #}
+
+        <main id="main" class="@container  flex flex-col w-full grow {{ mainStyles }}" {{ mainAttrs | safe }}>
+            {% block content %}{% endblock %}
+        </main>
+
+        {% call section({tag:"footer", padding:"base"},{id:"footer", class:footerStyles}) %}
+            {% block footer %}{% endblock %}
+            {% include "components/footer.njk" %}
+        {% endcall %}
+
+        {% block bottomSheet %}{% endblock %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+        {% if environment.env == 'dev' %}
+            {% include "components/_developmentWidget.njk" %}
+        {% endif %}
+
+        {% include "snippets/scripts.njk" %}
+
+    </body>
+</html>

@@ -1,0 +1,112 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set themeDefaults = {
+    bodySize: "text-body-base",
+    h2Size: "text-heading-base",
+    h3Size: "text-heading-sm",
+    headingFont: "font-display",
+    h2FontWeight: "font-weight-normal",
+    h3FontWeight: "font-weight-semibold",
+    bodyColor: "text-neutral",
+    linkColor: "text-link",
+    headingColor: "text-neutral",
+    borderColor: "border-neutral-light",
+    backgroundColor: "bg-neutral-light",
+    preRadius: "radius-base",
+    figureRadius: "radius-none",
+    scale: "1.1"
+} %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro markdown(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{% set mdStyles %}
+    --md-body-size: var(--{{ props.overrides.bodySize if props.overrides.bodySize else themeDefaults.bodySize }});
+    --md-line-height: var(--{{ props.overrides.bodySize if props.overrides.bodySize else themeDefaults.bodySize }}--line-height);
+    --md-h2-size: var(--{{ props.overrides.h2Size if props.overrides.h2Size else themeDefaults.h2Size }});
+    --md-h3-size: var(--{{ props.overrides.h3Size if props.overrides.h3Size else themeDefaults.h3Size }});
+    --md-heading-font: var(--{{ props.overrides.headingFont if props.overrides.headingFont else themeDefaults.headingFont }});
+    --md-h2-font-weight: var(--{{ props.overrides.h2FontWeight if props.overrides.h2FontWeight else themeDefaults.h2FontWeight }});
+    --md-h3-font-weight: var(--{{ props.overrides.h3FontWeight if props.overrides.h3FontWeight else themeDefaults.h3FontWeight }});
+    --md-body-color: var(--color-{{ props.overrides.bodyColor if props.overrides.bodyColor else themeDefaults.bodyColor }});
+    --md-link-color: var(--color-{{ props.overrides.linkColor if props.overrides.linkColor else themeDefaults.linkColor }});
+    --md-heading-color: var(--color-{{ props.overrides.headingColor if props.overrides.headingColor else themeDefaults.headingColor }});
+    --md-border-color: var(--color-{{ props.overrides.borderColor if props.overrides.borderColor else themeDefaults.borderColor }});
+    --md-background-color: var(--color-{{ props.overrides.backgroundColor if props.overrides.backgroundColor else themeDefaults.backgroundColor }});
+    --md-scale: {{ props.overrides.scale if props.overrides.scale else themeDefaults.scale }};
+    --md-pre-radius: var(--{{ props.overrides.preRadius if props.overrides.preRadius else themeDefaults.preRadius }});
+    --md-figure-radius: var(--{{ props.overrides.figureRadius if props.overrides.figureRadius else themeDefaults.figureRadius }});
+{% endset %}
+    {% if props.customStyles %}
+        <style>
+            {{ attrs.id }} {
+                {{ props.customStyles }}
+            }
+        </style>
+    {% endif %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+    <div
+        data-markdown
+        {{ loopAttrs(attrs) }}
+        style="{{ mdStyles }}"
+        class="markdown {{ attrs.class }}">
+        {% if props.content %}
+            {% if props.transform === true %}
+                {{ props.content | markdownify | safe }}
+            {% else %}
+                {{ props.content | safe }}
+            {% endif %}
+        {% endif %}
+        {% if caller %}
+            {% if props.transform === true %}
+                {{ caller() | markdownify | safe }}
+            {% else %}
+                {{ caller() | safe }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set markdownMeta = {
+    args: '{{ markdown(
+    props={
+        content: "",
+        transform: true | false,
+        overrides: {
+            bodySize: "",
+            h2Size: "",
+            h3Size: "",
+            headingFont: "",
+            h2FontWeight: "",
+            h3FontWeight: "",
+            bodyColor: "",
+            linkColor: "",
+            headingColor: "",
+            borderColor: "",
+            backgroundColor: "",
+            radius: "",
+            scale: ""
+        },
+        customStyles: ""
+    },
+    attrs={}
+) }}',
+description: "
+- Use `props.content` to inject markdown from a data source. Use `{{ caller() }}` when you want to write the content directly inside the component.
+- `props.transform` can be turned off when the content will already be transformed by Eleventy, as is the case with .md file `content`, or when the content you're injecting is already written in HTML.
+- `props.overrides` can set instance-specific overrides to the styles, such as using a smaller base font size or a different color.
+- `customStyles` takes in CSS to set instance-specific styles, such as making bolded text appear as a different color instead of bold, but note that you'll need to give the instance an `id` for it to work.
+"
+} %}

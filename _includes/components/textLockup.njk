@@ -1,0 +1,113 @@
+{# Nested Components ------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/button.njk" import button %}
+{% from "components/markdown.njk" import markdown %}
+
+{# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% macro textLockup(props={}, attrs={}) %}
+
+{# Values ------------------------------------------------------------------------------------------------------------------------------ #}
+
+{# Theme styles ----------- #}
+
+{% set textLockupStyles = "" %}
+{% set eyebrowStyles = "text-neutral-light" %}
+{% set titleStyles = "text-hue" %}
+
+{% set textLockupSizes = {
+    xl: {
+        eyebrow: "text-body-lg",
+        title: "text-heading-xl",
+        elaboration: "text-body-lg",
+        gap: "gap-lg"
+    },
+    lg: {
+        eyebrow: "text-body-lg",
+        title: "text-heading-lg",
+        elaboration: "text-body-lg",
+        gap: "gap-lg"
+    },
+    base: {
+        eyebrow: "text-body-sm",
+        title: "text-heading-base",
+        elaboration: "text-body-base",
+        gap: "gap-sm"
+    },
+    sm: {
+        eyebrow: "text-body-sm",
+        title: "text-heading-sm",
+        elaboration: "text-body-sm",
+        gap: "gap-sm"
+    }
+}
+%}
+
+{# Other ------------------ #}
+
+{% set titleTag %}{% if props.titleTag %}{{ props.titleTag }}{% else %}h2{% endif %}{% endset %}
+{% set textAlignment %}{% if props.textAlignment %}{{ props.textAlignment }}{% else %}left{% endif %}{% endset %}
+{% set textAlignment %}{{ props.textAlignment if props.textAlignment else "left" }}{% endset %}
+{% if textAlignment === "left" %}
+    {% set itemsAlignment = "start" %}
+{% elseif textAlignment === "right" %}
+    {% set itemsAlignment = "end" %}
+{% else %}
+    {% set itemsAlignment = "center" %}
+{% endif %}
+
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+<div data-textLockup
+    {{ loopAttrs(attrs) }}
+    class="flex flex-col {{ attrs.class }} {{ textLockupStyles }} text-{{ textAlignment }} items-{{ itemsAlignment }} {{ textLockupSizes[props.size].gap }}">
+
+    {% if props.eyebrow %}
+        <p class="{{ textLockupSizes[props.size].eyebrow }} {{ eyebrowStyles }}">{{ props.eyebrow }}</p>
+    {% endif %}
+
+    <{{ titleTag }} class="text-pretty {{ titleStyles }} {{ textLockupSizes[props.size].title }}">{{ props.title }}</{{ titleTag }}>
+
+    {% if props.elaboration %}
+        {{ markdown(
+            props={
+                content: props.elaboration,
+                transform: true,
+                overrides: {
+                    bodySize: textLockupSizes[props.size].elaboration
+                }
+            },
+            attrs={class:"w-full max-w-content"}
+        ) }}
+    {% endif %}
+
+    {% if caller %}
+        {{ caller() | safe }}
+    {% endif %}
+
+</div>
+
+{% endmacro %}
+
+{# Component Documentation ------------------------------------------------------------------------------------------------------------- #}
+
+{% set textLockupMeta = {
+    args: '{% call textLockup(
+    props={
+        size: "xl | lg | base | sm",
+        textAlignment: "left | center | right",
+        titleTag: "h2",
+        eyebrow: "",
+        title: "",
+        elaboration: ""
+    },
+    attrs={}
+) %}
+{% endcall %}',
+description: "
+- Useful most times there is a combination of title, paragraph, and button.
+- Optionally, can insert custom content using `{% call %}`.
+- `props.titleTag` defaults to h2, but can be changed.
+"
+} %}

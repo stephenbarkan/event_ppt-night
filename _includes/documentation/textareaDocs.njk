@@ -1,0 +1,37 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/textarea.njk" import textarea, textareaMeta %}
+{% from "components/markdown.njk" import markdown %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "textarea",
+    meta: textareaMeta
+}) %}
+    <div
+        x-data="{documentationTextarea: ''}"
+        class="w-full grid grid-cols-subgrid grid-col-full items-center">
+        {{ textarea(
+            {
+                name: "documentationTextarea",
+                label: "Textarea",
+                description: "Optional description",
+                fieldAttrs: {
+                    rows: "5",
+                    required: true,
+                    placeholder: "Type something here..."
+                }
+            }, {class:"w-full grid-col-content"}
+        ) }}
+        {% call markdown(
+            props={transform: false, overrides:{preRadius:"0"} },
+            attrs={class:"relative grid-col-full -bottom-base-x -mx-px"}
+        ) %}
+        <pre>
+<code>output: <span x-show="!documentationTextarea">""</span><span x-show="documentationTextarea"><span x-text="JSON.stringify(documentationTextarea)"></span></span>
+</code></pre>
+        {% endcall %}
+    </div>
+{% endcall %}

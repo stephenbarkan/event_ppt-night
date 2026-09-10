@@ -1,0 +1,40 @@
+{# Nested Components -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% from "components/_componentDocumentation.njk" import componentDocumentation %}
+{% from "components/input.njk" import input, inputMeta %}
+{% from "components/markdown.njk" import markdown %}
+
+{# ------------------------------------------------------------------------------------------------------------------------------------- #}
+
+{% call componentDocumentation({
+    title: "input",
+    meta: inputMeta
+}) %}
+    <div
+        x-data="{documentationInput: '', documentationInputRow: ''}"
+        class="grid items-center w-full grid-cols-subgrid grid-col-full">
+
+        {{ input(props={
+            name: "documentationInput",
+            label: "Input",
+            description: "Optional description",
+            fieldAttrs:{
+                type: "text",
+                placeholder: "Placeholder",
+                required: true
+            }
+        },
+        attrs={
+            class:"w-full grid-col-content"
+        }) }}
+
+        {% call markdown(
+            props={transform: false, overrides:{preRadius:"0"} },
+            attrs={class:"relative grid-col-full -bottom-base-x -mx-px"}
+        ) %}
+        <pre>
+<code>output: <span x-show="!documentationInput">""</span><span x-show="documentationInput"><span x-text="JSON.stringify(documentationInput)"></span></span>
+</code></pre>
+        {% endcall %}
+    </div>
+{% endcall %}

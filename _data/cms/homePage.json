@@ -1,0 +1,113 @@
+{
+  "eyebrow": "You're invited to",
+  "title": "Frenz Group PowerPoint Night",
+  "ctaLabel": "RSVP now",
+  "eventGraphic": "/assets/uploads/ppnight.gif",
+  "eventDetails": [
+    {
+      "title": "Date",
+      "elaboration": "Saturday, October 17th\n\n6-10pm"
+    },
+    {
+      "title": "Location",
+      "elaboration": "[Solar Intentions](https://maps.app.goo.gl/CVg9Jw9xMvjcR2bD8)\n\n1056 W Bryn Mawr Ave"
+    },
+    {
+      "title": "Description",
+      "elaboration": "Jennie write something here"
+    }
+  ],
+  "formFields": [
+    {
+      "macro": "input",
+      "props": {
+        "name": "name",
+        "label": "Your name(s)",
+        "description": "List all names if you're presenting together",
+        "fieldAttrs": {
+          "type": "text",
+          "required": true,
+          "autocomplete": "off"
+        }
+      }
+    },
+    {
+      "macro": "radioTile",
+      "props": {
+        "name": "presenting",
+        "label": "Will you present a PowerPoint?",
+        "options": [
+          { "label": "No", "value": "false" },
+          { "label": "Yes", "value": "true" }
+        ],
+        "fieldAttrs": {
+          "required": true
+        }
+      }
+    },
+    {
+      "macro": "radioTile",
+      "showCondition": "presenting.value == 'true'",
+      "props": {
+        "name": "needsHelp",
+        "label": "Do you need help coming up with a topic?",
+        "description": "The organizers will reach out to you if you want help brainstorming a topic!",
+        "options": [
+          { "label": "No", "value": "false" },
+          { "label": "Yes", "value": "true" }
+        ],
+        "fieldAttrs": {
+          "required": true
+        }
+      }
+    },
+    {
+      "macro": "textarea",
+      "showCondition": "needsHelp.value == 'false'",
+      "props": {
+        "name": "message",
+        "label": "Optional: If you already know your topic, give us a brief description here.",
+        "description": "",
+        "fieldAttrs": {
+          "placeholder": "What incredible knowledge will you impart upon the group?",
+          "autocomplete": "off",
+          "rows": "4"
+        }
+      }
+    },
+
+    {
+      "macro": "incrementer",
+      "props": {
+        "name": "guests",
+        "label": "Are you bringing any guests?",
+        "description": "Guests outside of the Frenz Signal group are welcome, we just want to know how much food to prepare!",
+        "fieldAttrs": {
+          "min": "0",
+          "required": true
+        }
+      }
+    },
+    {
+      "macro": "radioTile",
+      "props": {
+        "name": "donation",
+        "label": "There's a $270 fee for using the Solar Intentions space. Can you contribute something to help us cover the cost?",
+        "description": "Venmo @stephbarkan a few bucks if you can contribute!",
+        "options": [
+          { "label": "No", "value": "false" },
+          { "label": "Yes", "value": "true" }
+        ],
+        "fieldAttrs": {
+          "required": true
+        }
+      }
+    },
+    {
+      "macro": "submit",
+      "props": {
+        "label": "Submit RSVP"
+      }
+    }
+  ]
+}
