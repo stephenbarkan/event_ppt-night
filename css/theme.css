@@ -90,7 +90,7 @@
   --space-xs-max: 1.25rem;
 
   --space-sm-min: 1rem;
-  --space-sm-max: 1.75rem;
+  --space-sm-max: 2.25rem;
 
   --space-base-x-min: 1.25rem;
   --space-base-x-max: 2.75rem;
@@ -101,7 +101,7 @@
   --space-lg-min: 3rem;
   --space-lg-max: 5rem;
 
-  --space-xl-min: 4rem;
+  --space-xl-min: 6rem;
   --space-xl-max: 8rem;
 
   /* Sizes -------------------------------------------------------------------------------------------------------------------------- */
@@ -186,7 +186,7 @@
   /* Text ------------------------------------ */
 
   --color-text-neutral: lch(from var(--color-neutral) l c h / 1);
-  --color-text-neutral-light: lch(from var(--color-neutral) l c h / 0.8);
+  --color-text-neutral-light: lch(from var(--color-neutral) l c h / 0.85);
 
   --color-text-hue: lch(from var(--color-hue) l c h / 1);
   --color-text-hue-light: lch(from var(--color-hue) l c h / 0.7);
@@ -194,7 +194,7 @@
   --color-text-surface: lch(from var(--color-surface) calc(l + 9) c h / 1);
 
   --color-text-link: lch(from var(--color-neutral) l c h / 1);
-  --color-text-validation: var(--color-red-500);
+  --color-text-validation: var(--color-hue);
 
   /* Border ------------------------------------ */
 

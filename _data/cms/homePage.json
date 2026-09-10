@@ -23,7 +23,7 @@
       "props": {
         "name": "name",
         "label": "Your name(s)",
-        "description": "List all names if you're presenting together",
+        "description": "List all names if you're presenting as a group",
         "fieldAttrs": {
           "type": "text",
           "required": true,

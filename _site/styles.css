@@ -27,7 +27,7 @@
     --text-heading-sm: var(--heading-sm--font-size);
     --text-heading-base: var(--heading-base--font-size);
     --color-text-neutral: lch(from var(--color-neutral) l c h / 1);
-    --color-text-neutral-light: lch(from var(--color-neutral) l c h / 0.8);
+    --color-text-neutral-light: lch(from var(--color-neutral) l c h / 0.85);
     --color-text-link: lch(from var(--color-neutral) l c h / 1);
     --color-border-neutral-light: lch(from var(--color-neutral) l c h / 0.7);
     --color-bg-neutral-light: lch(from var(--color-neutral) l c h / 0.9);
@@ -1126,7 +1126,7 @@
     color: lch(from var(--color-neutral) l c h / 1);
   }
   .text-neutral-light {
-    color: lch(from var(--color-neutral) l c h / 0.8);
+    color: lch(from var(--color-neutral) l c h / 0.85);
   }
   .text-surface {
     color: lch(from var(--color-surface) calc(l + 9) c h / 1);
@@ -1135,7 +1135,7 @@
     color: lch(from var(--color-surface) calc(l + 9) c h / 1) !important;
   }
   .text-validation {
-    color: var(--color-red-500);
+    color: var(--color-hue);
   }
   .no-underline {
     text-decoration-line: none;
@@ -1331,7 +1331,7 @@
   }
   .placeholder\:text-neutral-light {
     &::placeholder {
-      color: lch(from var(--color-neutral) l c h / 0.8);
+      color: lch(from var(--color-neutral) l c h / 0.85);
     }
   }
   .backdrop\:bg-transparent {
@@ -1968,14 +1968,14 @@
   --space-xs-min: 0.75rem;
   --space-xs-max: 1.25rem;
   --space-sm-min: 1rem;
-  --space-sm-max: 1.75rem;
+  --space-sm-max: 2.25rem;
   --space-base-x-min: 1.25rem;
   --space-base-x-max: 2.75rem;
   --space-base-y-min: 2rem;
   --space-base-y-max: 3rem;
   --space-lg-min: 3rem;
   --space-lg-max: 5rem;
-  --space-xl-min: 4rem;
+  --space-xl-min: 6rem;
   --space-xl-max: 8rem;
   --size-tube-sm-y: calc(var(--body-sm--font-size) * 2.3);
   --size-tube-sm-x: calc(var(--body-sm--font-size) * 0.65);
@@ -2207,7 +2207,7 @@
   :focus-visible, :focus-within {
     outline-color: var(--color-text-link);
   }
-  :not(:has(*)), :is(p, h1, h2, h3, h4, h5, h6, span, label, sup, li) {
+  :not(:has(*)), :is(p, h1, h2, h3, h4, h5, h6, span, label, sup, li, legend) {
     text-box: trim-both cap alphabetic;
   }
 }
