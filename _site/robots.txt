@@ -2,6 +2,6 @@
 User-agent: *
 Allow: /
 
-Host: https://frenz-group-ppt-night.netlify.app/
+Host: https://frenz-group-ppt-night.netlify.app
 
-Sitemap: https://frenz-group-ppt-night.netlify.app//sitemap.xml
+Sitemap: https://frenz-group-ppt-night.netlify.app/sitemap.xml

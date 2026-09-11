@@ -1,5 +1,5 @@
 export default {
-  siteDomain: "https://frenz-group-ppt-night.netlify.app/",
+  siteDomain: "https://frenz-group-ppt-night.netlify.app",
   siteTitle: "RSVP to Frenz Group PowerPoint Night",
   siteDescription: "October 17th, 6pm at Solar Intentions",
   siteImage: "/assets/uploads/og-image.jpg",
