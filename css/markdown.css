@@ -8,7 +8,7 @@
   --space-5: calc(var(--md-body-size) * var(--md-line-height) * 18 / 8 * var(--md-scale));
 
   font-size: var(--md-body-size);
-  color: var(--md-body-color);
+  color: inherit;
 }
 
 .markdown > :first-child {

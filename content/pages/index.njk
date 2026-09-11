@@ -24,7 +24,6 @@ permalink: /index.html
 
 {# Values ------------------------------------------------------------------------------------------------------------------------------ #}
 
-{% set mainStyles = "py-xl gap-xl justify-center" %}
 
 {# ------------------------------------------------------------------------------------------------------------------------------------- #}
 
@@ -36,8 +35,7 @@ permalink: /index.html
                 titleTag: "h1",
                 size: "lg",
                 eyebrow: data.eyebrow,
-                title: data.title,
-                elaboration: data.elaboration
+                title: data.title
             }) %}
                 {{ button({label: data.ctaLabel, variant:"fill", size:"lg"},{href:"#form", class:"w-full"}) }}
             {% endcall %}
@@ -54,7 +52,7 @@ permalink: /index.html
             </div>
         </div>
 
-        {{ figure({image:data.eventGraphic, aspect:"aspect-square"}, {class:"self-start max-xl:row-1 xl:sticky top-xl"}) }}
+        {{ figure({image:global.eventGraphic, aspect:"aspect-square"}, {class:"self-start max-xl:row-1 xl:sticky top-xl"}) }}
     {% endcall %}
 {% endblock pageTitle %}
 
@@ -108,23 +106,24 @@ permalink: /index.html
                 {# Fields #}
                 <div class="flex flex-col items-center w-full gap-xl max-w-content px-base-x">
                     {% for item in data.formFields %}
-                        {% if item.showCondition %}<template class="w-full" x-if="{{ item.showCondition }}">{% endif %}
+                        {% set indentedStyles = "pl-base-x" if item.indented  %}
+                        {% if item.showCondition %}<template class="w-full " x-if="{{ item.showCondition }}">{% endif %}
                             {% if item.macro == "input" %}
-                                {{ input(props=item.props, attrs={class:"w-full"}) }}
+                                {{ input(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "incrementer" %}
-                                {{ incrementer(props=item.props, attrs={class:"w-full"}) }}
+                                {{ incrementer(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "checkbox" %}
-                                {{ checkbox(props=item.props, attrs={class:"w-full"}) }}
+                                {{ checkbox(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "radio" %}
-                                {{ radio(props=item.props, attrs={class:"w-full"}) }}
+                                {{ radio(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "radioTile" %}
-                                {{ radioTile(props=item.props, attrs={class:"w-full"}) }}
+                                {{ radioTile(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "textarea" %}
-                                {{ textarea(props=item.props, attrs={class:"w-full"}) }}
+                                {{ textarea(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "select" %}
-                                {{ select(props=item.props, attrs={class:"w-full"}) }}
+                                {{ select(props=item.props, attrs={class:"w-full " + indentedStyles}) }}
                             {% elseif item.macro == "submit" %}
-                                {{ button(props=item.props | assign({size:"lg", variant:"fill"}), attrs={type:"submit", class:"w-full"}) }}
+                                {{ button(props=item.props | assign({size:"lg", variant:"fill"}), attrs={type:"submit", class:"w-full "}) }}
                         {% endif %}
                         {% if item.showCondition %}</template>{% endif %}
                     {% endfor %}

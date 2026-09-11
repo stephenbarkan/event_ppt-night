@@ -8,6 +8,7 @@
 {% from "components/textLockup.njk" import textLockup %}
 {% from "components/divider.njk" import divider %}
 {% from "components/markdown.njk" import markdown %}
+{% from "components/figure.njk" import figure %}
 {% from "components/navbar.njk" import navbar with context %}
 
 {# Values ------------------------------------------------------------------------------------------------------------------------------ #}
@@ -15,8 +16,9 @@
 {# Theme Values ------------------ #}
 
 {% set htmlStyles = "bg-surface font-body text-neutral antialiased scroll-p-lg" %}
+{% set mainStyles = "py-xl gap-xl justify-center" %}
 {% set bodyStyles = "text-body-base flex flex-col min-h-dvh w-screen items-center" %}
-{% set footerStyles = "border-t border-neutral-light" %}
+{% set footerStyles = "bg-neutral-light text-surface border-t border-neutral-light" %}
 
 {# Other ------------------ #}
 

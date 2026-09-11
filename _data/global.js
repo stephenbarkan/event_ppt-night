@@ -5,5 +5,5 @@ export default {
   siteImage: "/assets/uploads/og-image.jpg",
   favicon: "/assets/uploads/favicon.png",
   themeColor: "#F4B9D4",
-  //   announcementBannerContent: "",
+  eventGraphic: "/assets/uploads/ppnight.gif",
 };

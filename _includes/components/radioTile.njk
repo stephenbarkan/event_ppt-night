@@ -4,6 +4,13 @@
 {% from "snippets/loopAttrs.njk" import loopAttrs %}
 {% from "components/button.njk" import button %}
 
+{# Values -------------------------------------------------------------------------------------------------------------------------- #}
+
+{% set buttonProps = {
+    type: "button",
+    size: "lg"
+} %}
+
 {# Macro ------------------------------------------------------------------------------------------------------------------------------- #}
 
 {% macro radioTile(props={}, attrs={}) %}
@@ -16,7 +23,6 @@
         <div class="{{ directionStyles["column"] }}">
 
     {% if props.label %}{{ fieldLabel({tag: "legend", fieldProps:props}) }}{% endif %}
-    {% if props.description %}{{ fieldDescription(props) }}{% endif %}
 
             <div
                 @keydown.right.prevent.stop="$focus.wrap().next()"
@@ -42,10 +48,8 @@
                             {{ button(
                                 props={
                                     label: option.label,
-                                    type: "button",
-                                    size: "lg",
                                     toggleValue: isTrueCondition
-                                },
+                                } | assign(buttonProps),
                                 attrs={
                                     type:"button",
                                     class:"w-full h-full",
@@ -58,6 +62,8 @@
                     </div>
                 {% endfor %}
             </div>
+                {% if props.description %}{{ fieldDescription(props) }}{% endif %}
+
         </div>
     </fieldset>
 

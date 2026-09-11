@@ -12,8 +12,25 @@
 
 {# ------------------------------------------------------------------------------------------------------------------------------------- #}
 
-{# {% block pageTitle %}{% endblock pageTitle %} #}
+{% block pageTitle %}
+    {% call container({type:"cols-2"}, {class:"items-center"}) %}
+
+        <div class="flex flex-col gap-xl">
+            {% call textLockup({
+                titleTag: "h1",
+                size: "base",
+                eyebrow: data.eyebrow,
+                elaboration: data.elaboration,
+                title: data.title
+            }) %}
+                {{ button({label: data.ctaLabel, size:"base"},{href:"/", class:""}) }}
+            {% endcall %}
+        </div>
+
+        {{ figure({image:global.eventGraphic, aspect:"aspect-square"}, {class:"self-start max-xl:row-1 xl:sticky top-xl"}) }}
+    {% endcall %}
+{% endblock pageTitle %}
+
 {% block titleCTA %}
-    {{ button({label: "Return home", variant:"fill"},{href:"/"}) }}
 {% endblock titleCTA %}
-{# {% block pageContent %}{% endblock pageContent %} #}
+{% block pageContent %}{% endblock pageContent %}
