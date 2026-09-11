@@ -1,5 +1,0 @@
-{
-  "ogType": "page",
-  "date": "Last Modified",
-  "permalink": "/{{ page.fileSlug }}/"
-}

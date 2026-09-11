@@ -82,7 +82,7 @@
       "props": {
         "name": "donation",
         "label": "3: There's a $270 fee for using the Solar Intentions space. Could you help us distribute the cost?",
-        "description": "Venmo @stephbarkan if you can want to contribute anything!",
+        "description": "Venmo @stephbarkan if you want to contribute anything!",
         "options": [
           { "label": "No", "value": "false" },
           { "label": "Yes", "value": "true" }
