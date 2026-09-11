@@ -6,7 +6,7 @@
 
 {# Values ------------------------------------------------------------------------------------------------------------------------------ #}
 
-{% set footerStyles = "gap-sm py-sm" %}
+{% set footerStyles = "bg-neutral-light text-surface border-t border-neutral-light" %}
 {% set footerButtonStyles = {
     size:"sm",
     type:"link",
@@ -15,8 +15,8 @@
 
 
 {# ------------------------------------------------------------------------------------------------------------------------------------- #}
-
-{% call container({size:"base", type: "flex", alignment: "end"},{class:"py-sm justify-center"}) %}
-    {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} },{class:"text-center"})}}
-    {# {{ cms.footer.ad }} #}
+{% call section({tag:"footer"},{id:"footer", class:footerStyles}) %}
+    {% call container({size:"base", type: "flex", alignment: "end"},{class:"py-sm justify-center"}) %}
+        {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} },{class:"text-center"})}}
+    {% endcall %}
 {% endcall %}

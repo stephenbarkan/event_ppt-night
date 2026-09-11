@@ -18,7 +18,6 @@
 {% set htmlStyles = "bg-surface font-body text-neutral antialiased scroll-p-lg" %}
 {% set mainStyles = "py-xl gap-xl justify-center" %}
 {% set bodyStyles = "text-body-base flex flex-col min-h-dvh w-screen items-center" %}
-{% set footerStyles = "bg-neutral-light text-surface border-t border-neutral-light" %}
 
 {# Other ------------------ #}
 
@@ -64,10 +63,8 @@
             {% block content %}{% endblock %}
         </main>
 
-        {% call section({tag:"footer", padding:"base"},{id:"footer", class:footerStyles}) %}
             {% block prefooter %}{% endblock prefooter %}
             {% block footer %}{% include "components/footer.njk" %}{% endblock %}
-        {% endcall %}
 
         {% block bottomSheet %}{% endblock %}
 
