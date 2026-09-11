@@ -17,6 +17,6 @@
 {# ------------------------------------------------------------------------------------------------------------------------------------- #}
 
 {% call container({size:"base", type: "flex", alignment: "end"},{class:"py-sm justify-center"}) %}
-    {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} })}}
+    {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} },{class:"text-center"})}}
     {# {{ cms.footer.ad }} #}
 {% endcall %}
