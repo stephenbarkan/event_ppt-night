@@ -65,8 +65,8 @@
         </main>
 
         {% call section({tag:"footer", padding:"base"},{id:"footer", class:footerStyles}) %}
-            {% block footer %}{% endblock %}
-            {% include "components/footer.njk" %}
+            {% block prefooter %}{% endblock prefooter %}
+            {% block footer %}{% include "components/footer.njk" %}{% endblock %}
         {% endcall %}
 
         {% block bottomSheet %}{% endblock %}
