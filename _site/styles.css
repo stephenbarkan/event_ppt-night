@@ -32,7 +32,7 @@
     --color-bg-neutral-light: lch(from var(--color-neutral) l c h / 0.9);
     --container-sm: 70rem;
     --container-base: 100rem;
-    --container-content: 58ch;
+    --container-content: 50ch;
     --z-lowered: -10;
     --z-elevated: 20;
     --z-sticky: 30;
@@ -448,9 +448,6 @@
   .w-\[var\(--container-content\)\] {
     width: var(--container-content);
   }
-  .w-\[var\(--container-sm\)\] {
-    width: var(--container-sm);
-  }
   .w-full {
     width: 100%;
   }
@@ -469,8 +466,11 @@
   .max-w-\[250px\] {
     max-width: 250px;
   }
+  .max-w-\[var\(--container-sm\)\] {
+    max-width: var(--container-sm);
+  }
   .max-w-content {
-    max-width: 58ch;
+    max-width: 50ch;
   }
   .max-w-cqi {
     max-width: 100cqi;
@@ -735,6 +735,9 @@
   }
   .gap-x-base-x {
     column-gap: var(--space-base-x);
+  }
+  .gap-x-xl {
+    column-gap: var(--space-xl);
   }
   .place-self-center {
     place-self: center;
@@ -1428,6 +1431,61 @@
       grid-row: 1;
     }
   }
+  .max-xl\:max-w-\[10px\] {
+    @media (width < 1120px) {
+      max-width: 10px;
+    }
+  }
+  .max-xl\:max-w-\[100px\] {
+    @media (width < 1120px) {
+      max-width: 100px;
+    }
+  }
+  .max-xl\:max-w-\[125px\] {
+    @media (width < 1120px) {
+      max-width: 125px;
+    }
+  }
+  .max-xl\:max-w-\[150px\] {
+    @media (width < 1120px) {
+      max-width: 150px;
+    }
+  }
+  .max-xl\:max-w-\[200px\] {
+    @media (width < 1120px) {
+      max-width: 200px;
+    }
+  }
+  .max-xl\:max-w-\[250px\] {
+    @media (width < 1120px) {
+      max-width: 250px;
+    }
+  }
+  .max-xl\:max-w-\[400px\] {
+    @media (width < 1120px) {
+      max-width: 400px;
+    }
+  }
+  .max-xl\:max-w-\[500px\] {
+    @media (width < 1120px) {
+      max-width: 500px;
+    }
+  }
+  .max-xl\:max-w-\[var\(--container-content\)\] {
+    @media (width < 1120px) {
+      max-width: var(--container-content);
+    }
+  }
+  .max-xl\:rounded-sm {
+    @media (width < 1120px) {
+      border-radius: calc(var(--size-tube-sm-y) * 0.225);
+    }
+  }
+  .max-lg\:row-1 {
+    @media (width < 1040px) {
+      grid-row: 1;
+    }
+  }
   .max-lg\:hidden {
     @media (width < 1040px) {
       display: none;
@@ -1495,9 +1553,19 @@
       position: sticky;
     }
   }
+  .xl\:max-w-\[var\(--container-base\)\] {
+    @media (width >= 1120px) {
+      max-width: var(--container-base);
+    }
+  }
   .xl\:grid-cols-2 {
     @media (width >= 1120px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .xl\:py-xl {
+    @media (width >= 1120px) {
+      padding-block: var(--space-xl);
     }
   }
   .print\:hidden {
@@ -1695,7 +1763,7 @@
       --button-base--line-height: calc(var(--button-base--line-height-min) + (0.5 * (var(--button-base--line-height-max) - var(--button-base--line-height-min))));
       --button-lg--line-height: calc(var(--button-lg--line-height-min) + (0.5 * (var(--button-lg--line-height-max) - var(--button-lg--line-height-min))));
     }
-    @media screen and (min-width: 850px) {
+    @media screen and (min-width: 1120px) {
       --body-sm--font-size: var(--body-sm--font-size-max);
       --body-base--font-size: var(--body-base--font-size-max);
       --body-lg--font-size: var(--body-lg--font-size-max);

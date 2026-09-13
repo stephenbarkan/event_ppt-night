@@ -50,7 +50,7 @@
       --button-lg--line-height: calc(var(--button-lg--line-height-min) + (0.5 * (var(--button-lg--line-height-max) - var(--button-lg--line-height-min))));
     }
 
-    @media screen and (min-width: 850px) {
+    @media screen and (min-width: 1120px) {
       --body-sm--font-size: var(--body-sm--font-size-max);
       --body-base--font-size: var(--body-base--font-size-max);
       --body-lg--font-size: var(--body-lg--font-size-max);

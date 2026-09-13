@@ -28,7 +28,7 @@
     class="flex flex-col {{ attrs.class }} {{ figureStyles }}">
     <div
         class="grow overflow-hidden
-            {{ props.imageStyles if props.imageStyles else figureImageStyles }}
+            {{ figureImageStyles }} {{ props.imageStyles }}
              {% if props.aspect %}
                 {{ props.aspect }}
              {% else %}
