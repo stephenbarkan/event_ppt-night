@@ -17,6 +17,6 @@
 {# ------------------------------------------------------------------------------------------------------------------------------------- #}
 {% call section({tag:"footer"},{id:"footer", class:footerStyles}) %}
     {% call container({size:"base", type: "flex", alignment: "end"},{class:"py-sm justify-center"}) %}
-        {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm"} },{class:"text-center"})}}
+        {{ markdown({content:cms.footer.ad, transform:true, overrides:{bodySize:"text-body-sm", bodyColor:"text-inherit"} },{class:"text-center"})}}
     {% endcall %}
 {% endcall %}

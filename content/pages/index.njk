@@ -20,7 +20,7 @@ permalink: /index.html
 
 {# Content Source -------------------------------------------------------------------------------------------------------------------------- #}
 
-{% set data = cms.homePage %}
+{% set data = cms.rsvpPage %}
 
 {# Values ------------------------------------------------------------------------------------------------------------------------------ #}
 
@@ -38,6 +38,7 @@ permalink: /index.html
                 title: data.title
             }) %}
                 {{ button({label: data.ctaLabel, variant:"fill", size:"lg"},{href:"#form", class:"w-full"}) }}
+                {{ figure({image:global.eventGraphic, aspect:"aspect-square", imageStyles:"xl:hidden"}, {class:""}) }}
             {% endcall %}
 
             <div>
@@ -52,7 +53,7 @@ permalink: /index.html
             </div>
         </div>
 
-        {{ figure({image:global.eventGraphic, aspect:"aspect-square", imageStyles:"max-xl:rounded-sm"}, {class:"self-start max-xl:max-w-[150px] max-xl:row-1 xl:sticky top-xl"}) }}
+        {{ figure({image:global.eventGraphic, aspect:"aspect-square", imageStyles:"max-xl:rounded-sm"}, {class:"self-start max-xl:hidden max-xl:row-1 xl:sticky top-xl"}) }}
     {% endcall %}
 {% endblock pageTitle %}
 

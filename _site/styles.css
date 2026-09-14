@@ -1085,6 +1085,9 @@
   .text-hue {
     color: lch(from var(--color-hue) l c h / 1);
   }
+  .text-inherit {
+    color: inherit;
+  }
   .text-link {
     color: lch(from var(--color-neutral) l c h / 1);
   }
@@ -1431,44 +1434,9 @@
       grid-row: 1;
     }
   }
-  .max-xl\:max-w-\[10px\] {
+  .max-xl\:hidden {
     @media (width < 1120px) {
-      max-width: 10px;
-    }
-  }
-  .max-xl\:max-w-\[100px\] {
-    @media (width < 1120px) {
-      max-width: 100px;
-    }
-  }
-  .max-xl\:max-w-\[125px\] {
-    @media (width < 1120px) {
-      max-width: 125px;
-    }
-  }
-  .max-xl\:max-w-\[150px\] {
-    @media (width < 1120px) {
-      max-width: 150px;
-    }
-  }
-  .max-xl\:max-w-\[200px\] {
-    @media (width < 1120px) {
-      max-width: 200px;
-    }
-  }
-  .max-xl\:max-w-\[250px\] {
-    @media (width < 1120px) {
-      max-width: 250px;
-    }
-  }
-  .max-xl\:max-w-\[400px\] {
-    @media (width < 1120px) {
-      max-width: 400px;
-    }
-  }
-  .max-xl\:max-w-\[500px\] {
-    @media (width < 1120px) {
-      max-width: 500px;
+      display: none;
     }
   }
   .max-xl\:max-w-\[var\(--container-content\)\] {
@@ -1479,11 +1447,6 @@
   .max-xl\:rounded-sm {
     @media (width < 1120px) {
       border-radius: calc(var(--size-tube-sm-y) * 0.225);
-    }
-  }
-  .max-lg\:row-1 {
-    @media (width < 1040px) {
-      grid-row: 1;
     }
   }
   .max-lg\:hidden {
@@ -1553,6 +1516,11 @@
       position: sticky;
     }
   }
+  .xl\:hidden {
+    @media (width >= 1120px) {
+      display: none;
+    }
+  }
   .xl\:max-w-\[var\(--container-base\)\] {
     @media (width >= 1120px) {
       max-width: var(--container-base);
@@ -1561,11 +1529,6 @@
   .xl\:grid-cols-2 {
     @media (width >= 1120px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  .xl\:py-xl {
-    @media (width >= 1120px) {
-      padding-block: var(--space-xl);
     }
   }
   .print\:hidden {
@@ -1959,7 +1922,7 @@
     --space-4: calc(var(--md-body-size) * var(--md-line-height) * 14 / 8 * var(--md-scale));
     --space-5: calc(var(--md-body-size) * var(--md-line-height) * 18 / 8 * var(--md-scale));
     font-size: var(--md-body-size);
-    color: inherit;
+    color: var(--md-body-color);
   }
   .markdown > :first-child {
     margin-block-start: 0;

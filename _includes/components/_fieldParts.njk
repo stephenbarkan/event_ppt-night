@@ -1,6 +1,7 @@
 {# Nested components ------------------------------------------------------------------------------------------------------------------- #}
 
 {% from "snippets/loopAttrs.njk" import loopAttrs %}
+{% from "components/markdown.njk" import markdown %}
 
 {# Values ------------------------------------------------------------------------------------------------------------------------------ #}
 
@@ -11,7 +12,10 @@
 
 {% set fieldLabelStyles = "text-neutral text-heading-sm text-pretty" %}
 {% set fieldLabelRequiredStyles = "text-validation" %}
-{% set fieldDescriptionStyles = "text-neutral-light text-body-sm text-pretty" %}
+{% set fieldDescriptionStyles = {
+    bodyColor: "text-neutral-light",
+    bodySize: "text-body-sm"
+} %}
 
 {% set fieldsetGroupStyles = "gap-3xs" %}
 {% set radioTileGroupStyles = "gap-3xs" %}
@@ -39,7 +43,7 @@
   [text-box:auto]
 " %}
 {% set fieldPadding = "py-3xs px-tube-base-x gap-tube-base-x" %}
-
+{% set fieldPlaceholderStyles = "placeholder:text-neutral-light" %}
 
 {# Macros ------------------------------------------------------------------------------------------------------------------------------ #}
 
@@ -59,6 +63,10 @@
     <small
         {{ loopAttrs(attrs) }}
         class="{{ fieldDescriptionStyles }} {{ attrs.class }}">
-        {{ props.description }}
+        {{ markdown({
+            content:props.description,
+            transform:true,
+            overrides:fieldDescriptionStyles
+        }) }}
     </small>
 {% endmacro %}

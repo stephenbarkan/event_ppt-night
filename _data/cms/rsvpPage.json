@@ -14,7 +14,7 @@
     },
     {
       "title": "About the event",
-      "elaboration": "Share something special with the Frenz at the Frenz Group PowerPoint Night!\n\nWe wanted to do this just for a fun night out amongst our friends, to give everyone a chance to talk about something they are passionate about and to celebrate each other and our creativity! We’re hosting it at a venue to make the night feel special but we hope it feels intimate and safe amongst close friends. \n\nPresent on anything you want! Share rare knowledge, teach us a skill, tell us a story, let us deep into your inner world, make us laugh… We can help you come up with a topic if you would like – just note it in the RSVP form!\n\nYou do not need to make a presentation to attend! \n\nYou can give a shared presentation with others! \n\nDinner will be served!"
+      "elaboration": "Share something special with the Frenz at the Frenz Group PowerPoint Night!\n\nWe wanted to do this just for a fun night out amongst our friends, to give everyone a chance to talk about something they are passionate about and to celebrate each other and our creativity! We’re hosting it at a venue to make the night feel special but we hope it feels intimate and safe amongst close friends. \n\nPresent on anything you want, for up to 10 minutes! Share rare knowledge, teach us a skill, tell us a story, let us deep into your inner world, make us laugh… We can help you come up with a topic if you would like – just note it in the RSVP form!\n\nYou do not need to make a presentation to attend! \n\nYou can give a shared presentation with others! \n\nBYOB or purchase something from Solar Intentions!\n\nDinner will be served!"
     }
   ],
   "formFields": [
@@ -23,7 +23,7 @@
       "props": {
         "name": "name",
         "label": "1: Your name(s)",
-        "description": "List all names if you're presenting as a group",
+        "description": "List all names if you're presenting as a group.",
         "fieldAttrs": {
           "type": "text",
           "required": true,
@@ -82,7 +82,7 @@
       "props": {
         "name": "donation",
         "label": "3: There's a $270 fee for using the Solar Intentions space. Could you help us distribute the cost?",
-        "description": "Venmo @stephbarkan if you want to contribute anything!",
+        "description": "Venmo [@stephbarkan](https://venmo.com/stephbarkan) if you want to contribute anything!",
         "options": [
           { "label": "No", "value": "false" },
           { "label": "Yes", "value": "true" }

@@ -20,5 +20,4 @@ export default [
   "search",
   "arrow_right",
   "arrow_drop_down",
-  "frame_exclamation",
 ];
