@@ -64,10 +64,10 @@
     },
     {
       "macro": "textarea",
-      "showCondition": "needsHelp.value == 'false'",
+      "showCondition": "needsHelp.value == 'false' && presenting.value == 'true'",
       "indented": true,
       "props": {
-        "name": "message",
+        "name": "topic",
         "label": "2.2: Optional: If you already know your topic, give us a brief description here!",
         "description": "",
         "fieldAttrs": {
@@ -78,10 +78,22 @@
       }
     },
     {
+      "macro": "textarea",
+      "props": {
+        "name": "dietary",
+        "label": "3: Optional: Do you have any dietary restrictions we should know about?",
+        "fieldAttrs": {
+          "placeholder": "Vegan, gluten-free, halal, etc.",
+          "autocomplete": "off",
+          "rows": "4"
+        }
+      }
+    },
+    {
       "macro": "radioTile",
       "props": {
         "name": "donation",
-        "label": "3: There's a $270 fee for using the Solar Intentions space. Could you help us distribute the cost?",
+        "label": "4: There's a $270 fee for using the Solar Intentions space. Could you help us distribute the cost?",
         "description": "Venmo [@stephbarkan](https://venmo.com/stephbarkan) if you want to contribute anything!",
         "options": [
           { "label": "No", "value": "false" },
