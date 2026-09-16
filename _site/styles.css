@@ -1477,11 +1477,21 @@
       }
     }
   }
+  .sm\:py-xl {
+    @media (width >= 600px) {
+      padding-block: var(--space-xl);
+    }
+  }
   .sm\:max-md\:block {
     @media (width >= 600px) {
       @media (width < 850px) {
         display: block;
       }
+    }
+  }
+  .md\:py-xl {
+    @media (width >= 850px) {
+      padding-block: var(--space-xl);
     }
   }
   .md\:max-lg\:block {
